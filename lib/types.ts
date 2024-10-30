@@ -10,7 +10,9 @@ export type Crv = "P-256" | "P-384";
 export type HashAlgorithm = "SHA-256" | "SHA-384" ;
 
 /** Base encoding alternatives */
-export type BaseEncoding = "base64" | "base58"
+export type BaseEncoding = "base64" | "base58";
+
+
 
 export interface KeyOptions {
     namedCurve    ?: Crv,

@@ -33,18 +33,32 @@ const DEFAULT_HASH_ALGORITHM = "SHA-256";
 export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): Promise<CryptoKeyPair> {
     const cryptoOptions: WebCryptoAPIData = ((): WebCryptoAPIData => {
         switch(algorithm) {
-            case "ecdsa" : return {
-                name       : "ECDSA",
-                namedCurve : options?.namedCurve || DEFAULT_CURVE
-            }
-            case "eddsa" : case "Ed25519" : return {
-                name : "Ed25519"
-            }
-            case "rsa": default: return {
-                name           : "RSA-PSS",
-                modulusLength  : options?.modulusLength || DEFAULT_MODULUS_LENGTH,
-                publicExponent : new Uint8Array([0x01, 0x00, 0x01]),
-                hash           : options?.hash || DEFAULT_HASH_ALGORITHM
+            case "ecdsa" :
+                return {
+                    name       : "ECDSA",
+                    namedCurve : options?.namedCurve || DEFAULT_CURVE
+                }
+            case "eddsa" : case "Ed25519" :
+                return {
+                    name : "Ed25519"
+                }
+            case "rsa": default: {
+                const modulusLength = ((): number => {
+                    if (options.modulusLength !== undefined) {
+                        if (options.modulusLength === 1024 || options.modulusLength === 2048 || options.modulusLength === 4096) {
+                            return options.modulusLength;
+                        } else {
+                            throw new Error(`Invalid RSA Modulus Length: ${options.modulusLength}`);
+                        }
+                    }
+                    return DEFAULT_MODULUS_LENGTH;
+                })();
+                return {
+                    name: "RSA-PSS",
+                    modulusLength,
+                    publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+                    hash: options?.hash || DEFAULT_HASH_ALGORITHM
+                }
             }
         }
     })();

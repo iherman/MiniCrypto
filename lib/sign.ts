@@ -1,7 +1,8 @@
+import { Multibase, Multikey, multikeyToCrypto } from "npm:multikey-webcrypto";
+
 import { BaseEncoding, JWKKeyPair } from "./types.ts";
 import * as utils from "./utils.ts";
 import * as keys from './keys.ts';
-import * as multikeys from "npm:multikey-webcrypto";
 import * as base58 from "./encodings/base58/index.js";
 import * as base64 from './encodings/base64.ts';
 
@@ -14,8 +15,9 @@ import * as base64 from './encodings/base64.ts';
  * @param encoding - choice between base64 or base58 encoding
  * @returns - either the signature in Multibase format
  */
-export async function sign(message: string, userKeys: JWKKeyPair, encoding: BaseEncoding = "base64"): Promise<string> {
-    const cryptoKeys: CryptoKeyPair = await keys.JWKKeyPairToCrypto(userKeys);
+export async function sign(message: string, userKeys: JWKKeyPair | Multikey, encoding: BaseEncoding = "base64"): Promise<string> {
+    // Convert the encoded key-pair to crypto keys
+    const cryptoKeys: CryptoKeyPair =(utils.isMultikey(userKeys)) ? await multikeyToCrypto(userKeys) :  await keys.JWKKeyPairToCrypto(userKeys);
 
     // Prepare the message to signature:
     const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
@@ -43,8 +45,8 @@ export async function sign(message: string, userKeys: JWKKeyPair, encoding: Base
  * @param key
  * @param encoding
  */
-export async function verify(message: string, signature: string, key: JsonWebKey, encoding: BaseEncoding = "base64"): Promise<boolean> {
-    const cryptoKey = await keys.JWKToCrypto(key);
+export async function verify(message: string, signature: string, key: JsonWebKey | Multibase, encoding: BaseEncoding = "base64"): Promise<boolean> {
+    const cryptoKey = (utils.isMultibase(key)) ? await multikeyToCrypto(key) : await keys.JWKToCrypto(key)
 
     // Prepare the message for verification:
     const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);

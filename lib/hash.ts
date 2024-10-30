@@ -1,9 +1,10 @@
 import * as types from "./types.ts";
 /**
- * Calculate Hash
+ * Calculate Hash of a string
+ *
  * @param input 
- * @param sh_func 
- * @returns 
+ * @param sh_func - can be `"SHA-256"` or `"SHA-384"`
+ * @result - the hash value in hexadecimal format.
  */
 export async function calculateHash(input: string, sh_func: types.HashAlgorithm = "SHA-256"): Promise<string> {
     const encoder = new TextEncoder();

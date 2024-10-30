@@ -1,22 +1,20 @@
-import * as types from "./types.ts";
+import { BaseEncoding, JWKKeyPair } from "./types.ts";
 import * as utils from "./utils.ts";
 import * as keys from './keys.ts';
 import * as multikeys from "npm:multikey-webcrypto";
-import * as base58 from './encodings/base58/';
+import * as base58 from "./encodings/base58/index.js";
 import * as base64 from './encodings/base64.ts';
 
 
 /**
  * Sign a message.
  *
- * Possible errors are added to the report, no exceptions should be thrown.
- *
- * @param userKeys
+ * @param userKeys - the private/public key pair
  * @param message
  * @param encoding - choice between base64 or base58 encoding
- * @returns - either the signature in Multicode format, or `null` in case of an error.
+ * @returns - either the signature in Multibase format
  */
-export async function sign(message: string, userKeys: types.JWKKeyPair, encoding: types.BaseEncoding = "base64"): Promise<string> {
+export async function sign(message: string, userKeys: JWKKeyPair, encoding: BaseEncoding = "base64"): Promise<string> {
     const cryptoKeys: CryptoKeyPair = await keys.JWKKeyPairToCrypto(userKeys);
 
     // Prepare the message to signature:
@@ -31,13 +29,21 @@ export async function sign(message: string, userKeys: types.JWKKeyPair, encoding
     if(encoding === "base64") {
         return base64.encode(UintSignature);
     } else if(encoding === "base58") {
-        return base58.encode(UintSignature)
+        return base58.encode(UintSignature);
     } else {
         throw new Error(`Unsupported encoding ${encoding}.`);
     }
 }
 
-export async function verify(message: string, signature: string, key: JsonWebKey, encoding: types.BaseEncoding = "base64"): Promise<boolean> {
+/**
+ * Verify a signature.
+ *
+ * @param message
+ * @param signature
+ * @param key
+ * @param encoding
+ */
+export async function verify(message: string, signature: string, key: JsonWebKey, encoding: BaseEncoding = "base64"): Promise<boolean> {
     const cryptoKey = await keys.JWKToCrypto(key);
 
     // Prepare the message for verification:

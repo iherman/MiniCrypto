@@ -1,13 +1,11 @@
-import * as multikeys from "npm:multikey-webcrypto";
+import { cryptoToMultikey, Multikey }                  from "npm:multikey-webcrypto";
 import { createNewKeys, cryptoToJWK, CryptoAlgorithm } from "./lib/keys.ts";
-import { KeyOptions, JWKKeyPair } from "./lib/types.ts";
+import { KeyOptions, JWKKeyPair }                      from "./lib/types.ts";
 
 export type { HashAlgorithm, KeyOptions } from "./lib/types.ts";
-export type { CryptoAlgorithm } from "./lib/keys.ts";
-
+export type { CryptoAlgorithm }           from "./lib/keys.ts";
+export { calculateHash as hash }          from "./lib/hash.ts";
 // export async function random(size: number): Promise<string> {};
-
-export { calculateHash as hash } from "./lib/hash.ts";
 
 /**
  * Generate a new public/private key pair in one of the ecdsa/eddsa/RSA crypto algorithms
@@ -30,8 +28,8 @@ export async function generateKeysJWK(algorithm: CryptoAlgorithm, options: KeyOp
 }
 
 /**
- * Generate a new public/private key pair in one of the ecdsa/eddsa/RSA crypto algorithms
- * (the term Ed25519 can also be used for eddsa). The result is a pair or Multibase format keys, i.e., in Multikey.
+ * Generate a new public/private key pair in one of the ecdsa or eddsa crypto algorithms
+ * (the term Ed25519 can also be used for eddsa). The result is a pair or Multibase formatted keys, i.e., in Multikey.
  *
  * Ecdsa can be (optionally) parametrized through the key options: the `nameCurve` field can be set to `"P-256"`
  * or `"P-384"` to change the EC curve. Default is `"P-256"`
@@ -39,19 +37,14 @@ export async function generateKeysJWK(algorithm: CryptoAlgorithm, options: KeyOp
  * @param algorithm - can be ecdsa, eddsa, Ed25519
  * @param options - depends on the algorithm chosen
  */
-export async function generateKeysMK(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<multikeys.Multikey> {
+export async function generateKeysMK(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<Multikey> {
     if (algorithm === "rsa") {
         throw new Error("No Multikey definition for RSA.");
     }
     const keys: CryptoKeyPair = await createNewKeys(algorithm, options);
-    return multikeys.cryptoToMultikey(keys);
+    return cryptoToMultikey(keys);
 }
 
 export { sign, verify } from "./lib/sign.ts"
-
-
-// For testing. This is probably not to be exported urbi et orbi
-
-export { isMultibase, isMultikey } from "./lib/utils.ts";
 
 

@@ -1,6 +1,5 @@
 import { KeyOptions, JWKKeyPair } from './types.ts';
 import { WebCryptoAPIData }       from './utils.ts';
-import * as multikeys from "npm:multikey-webcrypto";
 
 /** JWK values for the key types that are relevant for this package */
 type Kty = "EC" | "RSA" | "OKP";
@@ -73,9 +72,9 @@ export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): 
  * @async
  */
 export async function cryptoToJWK(pair: CryptoKeyPair): Promise<JWKKeyPair> {
-    const publicKey = await crypto.subtle.exportKey("jwk", pair.publicKey);
-    const privateKey = await crypto.subtle.exportKey("jwk", pair.privateKey);
-    return { publicKey, privateKey }
+    const publicKeyJwk = await crypto.subtle.exportKey("jwk", pair.publicKey);
+    const secretKeyJwk = await crypto.subtle.exportKey("jwk", pair.privateKey);
+    return { publicKeyJwk, secretKeyJwk }
 }
 
 /**
@@ -126,8 +125,8 @@ export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Pr
  */
 export async function JWKKeyPairToCrypto(keys: JWKKeyPair ): Promise<CryptoKeyPair> {
     const [ publicKey , privateKey ]: [CryptoKey,CryptoKey] = await Promise.all([
-        JWKToCrypto(keys.publicKey, ["verify"]),
-        JWKToCrypto(keys.privateKey, ["sign"]),
+        JWKToCrypto(keys.publicKeyJwk, ["verify"]),
+        JWKToCrypto(keys.secretKeyJwk, ["sign"]),
     ]);
     return {
         publicKey, privateKey

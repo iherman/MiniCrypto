@@ -17,7 +17,7 @@ console.log(`New key pair in Multikeys: ${JSON.stringify(keyPairMK, null, 4)}`);
 
 // Sign/verifiy with JWK
 const signatureJWK: string = await sign(message, keyPairJWK, "base58");
-const verifiedJWK: boolean = await verify(message, signatureJWK, keyPairJWK.publicKey, "base58");
+const verifiedJWK: boolean = await verify(message, signatureJWK, keyPairJWK.publicKeyJwk, "base58");
 console.log(`JWK Signature: ${signatureJWK} with verification result: ${verifiedJWK}`);
 
 // Sign/verifiy with MK

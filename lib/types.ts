@@ -1,4 +1,4 @@
-import * as multikeys from "npm:multikey-webcrypto";
+import { Multikey } from "npm:multikey-webcrypto";
 
 /** Key encoding alternatives */
 export type KeyEncoding = "JWK" | "Multikey";
@@ -12,8 +12,6 @@ export type HashAlgorithm = "SHA-256" | "SHA-384" ;
 /** Base encoding alternatives */
 export type BaseEncoding = "base64" | "base58";
 
-
-
 export interface KeyOptions {
     namedCurve    ?: Crv,
     hash          ?: HashAlgorithm,
@@ -22,9 +20,9 @@ export interface KeyOptions {
 }
 
 export interface JWKKeyPair {
-    publicKey   : JsonWebKey;
-    privateKey  : JsonWebKey;
+    publicKeyJwk : JsonWebKey;
+    secretKeyJwk : JsonWebKey;
 }
 
-export type KeyPair = JWKKeyPair | multikeys.Multikey;
+export type KeyPair = JWKKeyPair | Multikey;
 

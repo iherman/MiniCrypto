@@ -15,15 +15,21 @@ console.log(`New key pair in JWK: ${JSON.stringify(keyPairJWK,null,4)}`)
 const keyPairMK = await generateKeysMK("eddsa");
 console.log(`New key pair in Multikeys: ${JSON.stringify(keyPairMK, null, 4)}`);
 
-// Sign/verifiy with JWK
-const signatureJWK: string = await sign(message, keyPairJWK, "base58");
-const verifiedJWK: boolean = await verify(message, signatureJWK, keyPairJWK.publicKeyJwk, "base58");
+// Sign/verify with JWK
+const signatureJWK: string = await sign(message, keyPairJWK,{encoding: "base64"});
+const verifiedJWK: boolean = await verify(message, signatureJWK, keyPairJWK.publicKeyJwk, {encoding: "base64"});
 console.log(`JWK Signature: ${signatureJWK} with verification result: ${verifiedJWK}`);
 
-// Sign/verifiy with MK
-const signatureMK: string = await sign(message, keyPairMK, "base58");
-const verifiedMK: boolean = await verify(message, signatureMK, keyPairMK.publicKeyMultibase, "base58");
-console.log(`MK Signature: ${signatureMK} with verification result: ${verifiedMK}`);
+// Sign/verify with MK
+const signatureMK: string = await sign(message, keyPairMK, {encoding: "base64"});
+const verifiedMK: boolean = await verify(message, signatureMK, keyPairMK.publicKeyMultibase, {encoding: "base64"});
+console.log(`MK Signature with base58, plain: ${signatureMK} with verification result: ${verifiedMK}`);
+
+const signatureMKmb: string = await sign(message, keyPairMK, {encoding: "base64", format: "multibase"});
+const verifiedMKmb: boolean = await verify(message, signatureMKmb, keyPairMK.publicKeyMultibase, {encoding: "base64", format: "multibase"});
+console.log(`MK Signature with base58, multibase: ${signatureMKmb} with verification result: ${verifiedMKmb}`);
+
+
 
 // const keyPairRSA = await generateKeysJWK("rsa");
 // console.log(`New key pair for RSA: ${JSON.stringify(keyPairRSA, null, 4)}`);

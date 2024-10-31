@@ -1,7 +1,4 @@
-import { Multikey } from "npm:multikey-webcrypto";
-
-/** Key encoding alternatives */
-export type KeyEncoding = "JWK" | "Multikey";
+import { Multikey, Multibase } from "npm:multikey-webcrypto";
 
 /** JWK values for the elliptic curves that are relevant for this package */
 export type Crv = "P-256" | "P-384";
@@ -24,5 +21,14 @@ export interface JWKKeyPair {
     secretKeyJwk : JsonWebKey;
 }
 
+/** Just some shorthands... */
+export type Key     = JsonWebKey | Multibase;
 export type KeyPair = JWKKeyPair | Multikey;
+
+export interface SignatureOptions {
+    encoding ?: BaseEncoding,
+    format   ?: "plain" | "multibase"
+}
+
+
 

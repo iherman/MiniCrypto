@@ -3,9 +3,7 @@ import { Multibase, Multikey, multikeyToCrypto } from "npm:multikey-webcrypto";
 import { BaseEncoding, JWKKeyPair } from "./types.ts";
 import * as utils from "./utils.ts";
 import * as keys from './keys.ts';
-import * as base58 from "./encodings/base58/index.js";
-import * as base64 from './encodings/base64.ts';
-
+import { base58, base64 } from "./encoding.ts";
 
 /**
  * Sign a message.

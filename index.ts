@@ -2,9 +2,9 @@ import { cryptoToMultikey, Multikey }                  from "npm:multikey-webcry
 import { createNewKeys, cryptoToJWK, CryptoAlgorithm } from "./lib/keys.ts";
 import { KeyOptions, JWKKeyPair }                      from "./lib/types.ts";
 
-export type { HashAlgorithm, KeyOptions } from "./lib/types.ts";
-export type { CryptoAlgorithm }           from "./lib/keys.ts";
-export { calculateHash as hash }          from "./lib/hash.ts";
+export type { HashAlgorithm, KeyOptions, SignatureOptions, BaseEncoding } from "./lib/types.ts";
+export type { CryptoAlgorithm }    from "./lib/keys.ts";
+export { calculateHash as hash }   from "./lib/hash.ts";
 // export async function random(size: number): Promise<string> {};
 
 /**

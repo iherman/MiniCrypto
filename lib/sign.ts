@@ -2,7 +2,9 @@ import { multikeyToCrypto }               from "npm:multikey-webcrypto";
 import { Key, KeyPair, SignatureOptions } from "./types.ts";
 import * as utils                         from "./utils.ts";
 import * as keys                          from "./keys.ts";
-import { base58, base64 }                 from "./encoding.ts";
+import { base58, base64 }                 from "./encodingMultibase.ts";
+// import * as base64Plain                   from "./base64.ts";
+
 
 const generateFullOptions = (opts: SignatureOptions | undefined): SignatureOptions => {
     const defaultOptions: SignatureOptions = {
@@ -11,7 +13,6 @@ const generateFullOptions = (opts: SignatureOptions | undefined): SignatureOptio
     };
     return (opts === undefined) ? defaultOptions : {...defaultOptions, ...opts};
 }
-
 
 /**
  * Sign a message.
@@ -39,14 +40,16 @@ export async function sign(message: string, userKeys: KeyPair, options?: Signatu
 
     const UintSignature: Uint8Array = new Uint8Array(rawSignature);
 
-    const output = ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintSignature);
-
     if (fullOptions.format === "plain") {
-        return output;
+        // The difference between the two versions of base64 is still to be clarified...
+        return ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintSignature);
+        // return ((fullOptions.encoding === "base58") ? base58 : base64Plain).encode(UintSignature);
     } else {
+        const output = ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintSignature);
         return ((fullOptions.encoding === "base58") ? 'z' : 'u') + output;
     }
 }
+
 
 /**
  * Verify a signature.
@@ -69,15 +72,19 @@ export async function verify(message: string, signature: string, key: Key, optio
 
     // Decoding the message from the encoded version
     const rawSignature = ((): ArrayBuffer => {
-        // No Multibase involved
         if (fullOptions.format === "plain") {
+            // No Multibase involved
             return ((fullOptions.encoding === "base58") ? base58 : base64).decode(signature);
+            // The difference in encoding base64 is still to be understood...
+            // return ((fullOptions.encoding === "base58") ? base58 : base64Plain).decode(signature);
         } else {
             // The Multibase encoding dictates
             if (signature[0] === 'z') {
                 return base58.decode(signature.slice(1));
-            } else {
+            } else if (signature[0] === 'u') {
                 return base64.decode(signature.slice(1));
+            } else {
+                throw new Error(`Invalid multibase value (begins with '${signature[0]}'`);
             }
         }
     })();

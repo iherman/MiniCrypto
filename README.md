@@ -37,7 +37,9 @@ const keyPairRSAJWK = await generateKeysJWK("rsa", {modulusLength: 4096});  // D
 
 ## Signature/verification
 
-The keys can be used to sign a string message and to verify the signature. The signature itself is encoded as base64 or base58 encoding (both url-safe) and, optionally, stored as a [Multibase](https://www.w3.org/TR/controller-document/#multibase-0) string.
+The keys can be used to sign a string message and to verify the signature. The signature itself is encoded as
+base64 (more precisely, base-64-url-no-pad) or base58 encoding more precisely, base-58-btc) and, optionally, stored as a
+[Multibase](https://www.w3.org/TR/controller-document/#multibase-0) string.
 
 The coding examples (see the API for details):
 

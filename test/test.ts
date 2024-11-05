@@ -21,12 +21,12 @@ const verifiedJWK: boolean = await verify(message, signatureJWK, keyPairJWK.publ
 console.log(`JWK Signature: ${signatureJWK} with verification result: ${verifiedJWK}`);
 
 // Sign/verify with MK
-const signatureMK: string = await sign(message, keyPairMK, {encoding: "base64"});
-const verifiedMK: boolean = await verify(message, signatureMK, keyPairMK.publicKeyMultibase, {encoding: "base64"});
+const signatureMK: string = await sign(message, keyPairMK, {encoding: "base58"});
+const verifiedMK: boolean = await verify(message, signatureMK, keyPairMK.publicKeyMultibase, {encoding: "base58"});
 console.log(`MK Signature with base58, plain: ${signatureMK} with verification result: ${verifiedMK}`);
 
-const signatureMKmb: string = await sign(message, keyPairMK, {encoding: "base64", format: "multibase"});
-const verifiedMKmb: boolean = await verify(message, signatureMKmb, keyPairMK.publicKeyMultibase, {encoding: "base64", format: "multibase"});
+const signatureMKmb: string = await sign(message, keyPairMK, {encoding: "base58", format: "multibase"});
+const verifiedMKmb: boolean = await verify(message, signatureMKmb, keyPairMK.publicKeyMultibase, {encoding: "base58", format: "multibase"});
 console.log(`MK Signature with base58, multibase: ${signatureMKmb} with verification result: ${verifiedMKmb}`);
 
 

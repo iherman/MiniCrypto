@@ -8,7 +8,7 @@ import { WebCryptoAPIData }       from './utils.ts';
 type Kty = "EC" | "RSA" | "OKP";
 
 /** Crypto identifier values that are relevant for this package */
-export type CryptoAlgorithm = "ecdsa" | "eddsa" | "ed25519" | "rsa-pss" | "rsa-oaep";
+export type CryptoAlgorithm = "ecdsa" | "eddsa" | "ed25519" | "rsa-pss" | "rsa" | "rsa-oaep";
 
 const DEFAULT_CURVE            = "P-256";
 const DEFAULT_MODULUS_LENGTH     = 2048;
@@ -63,7 +63,8 @@ export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): 
                     keyUsages: ["encrypt", "decrypt"],
                 }
             }
-            case "rsa-pss": {
+            case "rsa-pss":
+            case "rsa": {
                 return {
                     cryptoDetails : {
                         name: "RSA-PSS",
@@ -83,7 +84,9 @@ export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): 
                     keyUsages: DEFAULT_KEY_USAGES,
                 }
             }
-            case "eddsa" : case "ed25519": default:
+            case "eddsa" :
+            case "ed25519":
+            default:
                 return {
                     cryptoDetails : {
                         name : "Ed25519"

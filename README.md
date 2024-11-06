@@ -10,10 +10,11 @@ The functions can be used to generate a private/public (also referred to as secr
 
 1. Elliptic Curve Digital Signature Algorithm (ECDSA)[1]: widely used cryptographic method to sign/verify data. It has two "versions": P-256 and P-384[2]. The latter is more secure, but the keys and the signatures are longer. 
 2. Edwards-Curve Digital Signature Algorithm (EdDSA)[3] (also referred to as Ed25519): more recent than ECDSA, it has a somewhat simpler structure, usable to sign/verify.
-3. RSA: widely used for sign/verify as well as encrypt/decrypt. The downside is that the keys and signatures are (sometimes significantly) longer than for EdDSA or ECDSA.
+3. RSA-PSS: RSA variant used for sign/verify. The downside is that the keys and signatures are (sometimes significantly) longer than for EdDSA or ECDSA.
+4. RSA-OAEP: RSA variant used for encrypt/decrypt. Note that, in this package, that is the only key that can be used for encryption.
 
 
-A key is either stored as
+A key pair is either stored as
 
 - [WKKeyPair](https://www.w3.org/TR/controller-document/#JsonWebKey), i.e., a pair of key stored in JSON Web Key that conforms to [RFC7517](https://www.rfc-editor.org/rfc/rfc7517). The keys are relatively large JSON structures; advantage is that they can be managed easily.
 - [Multikey](https://www.w3.org/TR/controller-document/#Multikey), i.e., a pair of key stored in [Multibase](https://www.w3.org/TR/controller-document/#multibase-0). The key data are encoded and are therefore fairly opaque, but are extremely compact. Note that RSA keys cannot be stored in this format.
@@ -30,15 +31,17 @@ const keyPairECDSAMK = await generateKeysMK("ecdsa");    // Default is "P-256"
 // ECDSA Keys using P-384
 const keyPairECDSAMK384 = await generateKeysMK("ecdsa", {namedCurve: "P-384"});
 
-// RSA Keys generated with a larger modulus (larger key, more secure)
-const keyPairRSAJWK = await generateKeysJWK("rsa", {modulusLength: 4096});  // Default is 2048
+// RSA Keys generated with a larger modulus (larger key, more secure) for signature/verification
+const keyPairRSAPSS = await generateKeysJWK("rsa-pss", {modulusLength: 4096});  // Default is 2048
 
+// RSA Keys for encryption/decryption, using the default modulus length
+const keyPairRSAOAEP = await generateKeysJWK("rsa-oaep");
 ```
 
 ## Signature/verification
 
 The keys can be used to sign a string message and to verify the signature. The signature itself is encoded as
-base64 (more precisely, base-64-url-no-pad) or base58 encoding more precisely, base-58-btc) and, optionally, stored as a
+base64 (more precisely, base-64-url-no-pad) or base58 encoding (more precisely, base-58-btc) and, optionally, stored as a
 [Multibase](https://www.w3.org/TR/controller-document/#multibase-0) string.
 
 The coding examples (see the API for details):
@@ -57,12 +60,29 @@ const signature58: string = await sign(message, keyPairECDSAMK, {encoding: "base
 const isValid58: boolean = await sign(message, signature, keyPairECDSAMK.publicKeyMultibase, {format: "multibase"});
 ```
 
+## Encryption/decryption
+
+```typescript
+import { encrypt, decrypt } from "minicrypto";
+
+const message2 = "This is the string to be encrypted";
+
+// Signature stored as plain base64
+const ciphertext64: string = await encrypt(message2, keyPairRSAOAEP.publicKeyJwk);
+
+// Signature stored as multibase base58
+const ciphertext58: string = await encrypt(message2, keyPairRSAOAEP.publicKeyJwk, {encoding: "base58", format: "multibase"});
+
+// Decrypt a ciphertext stored in multibase (note that the option is not necessary, 
+// a multibase is recognized automatically
+const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.secretKeyJwk);
+```
+
 ## Miscellaneous functions
 
 ### Hashing
 
 Very frequently used for various type of data. There are many hash functions around, the most widely used these days is "SHA-256", with "SHA-384" as a more secure alternative.
-
 
 ```typescript
 import { hash } from "minicrypto";

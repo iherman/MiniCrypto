@@ -1,3 +1,6 @@
+/**
+ * Key management operations: creation, conversion to and from JWK format
+ */
 import { KeyOptions, JWKKeyPair } from './types.ts';
 import { WebCryptoAPIData }       from './utils.ts';
 
@@ -5,7 +8,7 @@ import { WebCryptoAPIData }       from './utils.ts';
 type Kty = "EC" | "RSA" | "OKP";
 
 /** Crypto identifier values that are relevant for this package */
-export type CryptoAlgorithm = "ecdsa" | "eddsa" | "Ed25519" | "rsa";
+export type CryptoAlgorithm = "ecdsa" | "eddsa" | "ed25519" | "rsa-pss" | "rsa" | "rsa-oaep";
 
 const DEFAULT_CURVE            = "P-256";
 const DEFAULT_MODULUS_LENGTH     = 2048;
@@ -30,38 +33,69 @@ const DEFAULT_HASH_ALGORITHM = "SHA-256";
  * @async
  */
 export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): Promise<CryptoKeyPair> {
-    const cryptoOptions: WebCryptoAPIData = ((): WebCryptoAPIData => {
-        switch(algorithm) {
-            case "ecdsa" :
-                return {
-                    name       : "ECDSA",
-                    namedCurve : options?.namedCurve || DEFAULT_CURVE
-                }
-            case "eddsa" : case "Ed25519" :
-                return {
-                    name : "Ed25519"
-                }
-            case "rsa": default: {
-                const modulusLength = ((): number => {
-                    if (options.modulusLength !== undefined) {
-                        if (options.modulusLength === 1024 || options.modulusLength === 2048 || options.modulusLength === 4096) {
-                            return options.modulusLength;
-                        } else {
-                            throw new Error(`Invalid RSA Modulus Length: ${options.modulusLength}`);
-                        }
-                    }
-                    return DEFAULT_MODULUS_LENGTH;
-                })();
-                return {
-                    name: "RSA-PSS",
-                    modulusLength,
-                    publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-                    hash: options?.hash || DEFAULT_HASH_ALGORITHM
-                }
+    const modulusLength = ((): number => {
+        if (options.modulusLength !== undefined) {
+            if (options.modulusLength === 1024 || options.modulusLength === 2048 || options.modulusLength === 4096) {
+                return options.modulusLength;
+            } else {
+                throw new Error(`Invalid RSA Modulus Length: ${options.modulusLength}`);
             }
         }
+        return DEFAULT_MODULUS_LENGTH;
     })();
-    return crypto.subtle.generateKey(cryptoOptions, true, ["sign", "verify"]) as Promise<CryptoKeyPair>;
+
+    interface KeyOptions {
+        cryptoDetails: WebCryptoAPIData,
+        keyUsages: KeyUsage[],
+    }
+    const DEFAULT_KEY_USAGES: KeyUsage[] = ["sign", "verify"];
+
+    const cryptoOptions: KeyOptions = ((): KeyOptions => {
+        switch(algorithm.toLowerCase()) {
+            case "rsa-oaep": {
+                return {
+                    cryptoDetails : {
+                        name: "RSA-OAEP",
+                        modulusLength,
+                        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+                        hash: options?.hash || DEFAULT_HASH_ALGORITHM
+                    },
+                    keyUsages: ["encrypt", "decrypt"],
+                }
+            }
+            case "rsa-pss":
+            case "rsa": {
+                return {
+                    cryptoDetails : {
+                        name: "RSA-PSS",
+                        modulusLength,
+                        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+                        hash: options?.hash || DEFAULT_HASH_ALGORITHM
+                    },
+                    keyUsages: DEFAULT_KEY_USAGES,
+                }
+            }
+            case "ecdsa" : {
+                return {
+                    cryptoDetails: {
+                        name: "ECDSA",
+                        namedCurve: options?.namedCurve || DEFAULT_CURVE
+                    },
+                    keyUsages: DEFAULT_KEY_USAGES,
+                }
+            }
+            case "eddsa" :
+            case "ed25519":
+            default:
+                return {
+                    cryptoDetails : {
+                        name : "Ed25519"
+                    },
+                    keyUsages: DEFAULT_KEY_USAGES,
+                }
+        }
+    })();
+    return crypto.subtle.generateKey(cryptoOptions.cryptoDetails, true, cryptoOptions.keyUsages) as Promise<CryptoKeyPair>;
 }
 
 /**
@@ -81,7 +115,7 @@ export async function cryptoToJWK(pair: CryptoKeyPair): Promise<JWKKeyPair> {
  * Convert a JWK key representation of a Key to WebCrypto's representation.
  *
  * @param key
- * @param usage - can be `["verify"]` or `["sign"]` for a public or private key, respectively.
+ * @param usage - can be `["verify"]/["encrypt"]` or `["sign"]/["decrypt"]` for a public or private key, respectively
  * @constructor
  * @return - a Promise with a CryptoKey
  * @async
@@ -90,10 +124,30 @@ export async function cryptoToJWK(pair: CryptoKeyPair): Promise<JWKKeyPair> {
 export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Promise<CryptoKey> {
     const algorithm = ((): RsaHashedImportParams | EcKeyImportParams => {
         switch (key.kty as Kty) {
+            // deno-lint-ignore no-fallthrough
             case 'RSA' :
-                return {
-                    name: "RSA-PSS",
-                    hash: key.alg === "PS256" ? "SHA-256" : "SHA-384"
+                switch (key.alg) {
+                    case "RSA-OAEP-384" :
+                        return {
+                            name: "RSA-OAEP",
+                            hash: "SHA-384",
+                        }
+                    case "RSA-OAEP-256" :
+                        return {
+                            name: "RSA-OAEP",
+                            hash: "SHA-256",
+                        }
+                    case "PS384" :
+                        return {
+                            name: "RSA-PSS",
+                            hash: "SHA-384",
+                        }
+                    case "PS256" :
+                    default:
+                        return {
+                            name: "RSA-PSS",
+                            hash: "SHA-256",
+                        }
                 }
             case 'EC':
                 return {
@@ -107,14 +161,12 @@ export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Pr
                     namedCurve: ""
                 }
             default:
-                // In fact, this does not happen; the JWK comes from our own
-                // generation, that raises an error earlier in this case.
-                // But this keeps typescript happy...
                 throw new Error("Unknown kty value for the JWK key");
         }
     })();
     return crypto.subtle.importKey("jwk", key, algorithm, true, usage);
 }
+
 
 /**
  * Convert a public/private key pair in JWK to WebCrypto's binary representation.
@@ -124,9 +176,17 @@ export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Pr
  * @async
  */
 export async function JWKKeyPairToCrypto(keys: JWKKeyPair ): Promise<CryptoKeyPair> {
+    // We have to separate the RSA OAEP case from the others to specify the "usage" setting.
+    const usages: KeyUsage[] = ((): KeyUsage[] => {
+            const publicUsage: KeyUsage = keys.publicKeyJwk?.alg?.startsWith("RSA-OAEP") ? "encrypt" : "verify";
+            const secretUsage: KeyUsage = keys.secretKeyJwk?.alg?.startsWith("RSA-OAEP") ? "decrypt" : "sign";
+            return [publicUsage, secretUsage];
+        }
+    )();
+
     const [ publicKey , privateKey ]: [CryptoKey,CryptoKey] = await Promise.all([
-        JWKToCrypto(keys.publicKeyJwk, ["verify"]),
-        JWKToCrypto(keys.secretKeyJwk, ["sign"]),
+        JWKToCrypto(keys.publicKeyJwk, [usages[0]]),
+        JWKToCrypto(keys.secretKeyJwk, [usages[1]]),
     ]);
     return {
         publicKey, privateKey

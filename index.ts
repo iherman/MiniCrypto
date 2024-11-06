@@ -2,7 +2,7 @@ import { cryptoToMultikey, Multikey }                  from "npm:multikey-webcry
 import { createNewKeys, cryptoToJWK, CryptoAlgorithm } from "./lib/keys.ts";
 import { KeyOptions, JWKKeyPair }                      from "./lib/types.ts";
 
-export type { HashAlgorithm, KeyOptions, SignatureOptions, BaseEncoding } from "./lib/types.ts";
+export type { HashAlgorithm, KeyOptions, OutputOptions, BaseEncoding } from "./lib/types.ts";
 export type { CryptoAlgorithm }    from "./lib/keys.ts";
 export { calculateHash as hash }   from "./lib/hash.ts";
 // export async function random(size: number): Promise<string> {};
@@ -38,13 +38,13 @@ export async function generateKeysJWK(algorithm: CryptoAlgorithm, options: KeyOp
  * @param options - depends on the algorithm chosen
  */
 export async function generateKeysMK(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<Multikey> {
-    if (algorithm === "rsa") {
+    if (algorithm === "rsa-pss" || algorithm === "rsa-oaep") {
         throw new Error("No Multikey definition for RSA.");
     }
     const keys: CryptoKeyPair = await createNewKeys(algorithm, options);
     return cryptoToMultikey(keys);
 }
 
-export { sign, verify } from "./lib/sign.ts"
+export { sign, verify, encrypt, decrypt } from "./lib/crypto.ts"
 
 

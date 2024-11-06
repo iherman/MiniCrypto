@@ -7,7 +7,7 @@
 /**
  * Base64 encoder/decoder
  *
- * The result of this version is different from the encoder/decoder in `encodingMultibase.ts`, and
+ * The result of this version is different from the encoder/decoder in `multibase.ts`, and
  * I am not sure exactly why. Unfortunately, this is the version that works with the
  * elliptical curve algorithms necessary for multikey encoding of keys, so I keep this
  * for the non-multikey usages.

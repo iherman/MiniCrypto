@@ -1,4 +1,11 @@
-import * as types from "./types.ts";
+/**
+ * Hashing function; useful for crypto users, though not used by the rest of the package.
+ *
+ * @module
+ */
+import * as types          from "./types.ts";
+import {textToArrayBuffer} from "./utils.ts";
+
 /**
  * Calculate Hash of a string
  *
@@ -7,8 +14,7 @@ import * as types from "./types.ts";
  * @result - the hash value in hexadecimal format.
  */
 export async function calculateHash(input: string, sh_func: types.HashAlgorithm = "SHA-256"): Promise<string> {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(input);
+    const data = textToArrayBuffer(input)
     const hashBuffer = await crypto.subtle.digest(sh_func, data);
 
     const hashArray = Array.from(new Uint8Array(hashBuffer));

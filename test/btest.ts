@@ -1,4 +1,4 @@
-import { base64 }   from "../lib/encodingMultibase.ts";
+import { base64 }   from "../lib/multibase.ts";
 import * as bOld    from "../.Attic/encodings/base64.ts";
 
 const message: string = "This is just a simple text message.";

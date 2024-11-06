@@ -1,5 +1,13 @@
-import {Crv, KeyOptions } from "./types.ts";
-import { Multibase, Multikey } from "npm:multikey-webcrypto";
+/**
+ * Various utility functions; not meant to be exported to the external world...
+ *
+ * @module
+ */
+
+import {Crv, KeyOptions, OutputOptions } from "./types.ts";
+import { Multibase, Multikey }           from "npm:multikey-webcrypto";
+import { base58, base64 }                from "./multibase.ts";
+// import * as base64Plain                 from "./base64.ts";
 
 const SALT_LENGTH= 32;
 
@@ -8,7 +16,7 @@ const SALT_LENGTH= 32;
  */
 // deno-lint-ignore no-explicit-any
 export function isMultibase(obj: any): obj is Multibase {
-    return (typeof obj === "string" && (obj as string)[0] === 'z');
+    return (typeof obj === "string" && ((obj as string)[0] === 'z' || (obj as string)[0] === 'u'));
 }
 
 /**
@@ -31,7 +39,7 @@ export function isMultikey(obj: object): obj is Multikey {
 }
 
 /**
- * Text to array buffer, needed for crypto operations
+ * Text to array buffer, needed for crypto operations.
  *
  * @param text
  */
@@ -40,13 +48,23 @@ export function textToArrayBuffer(text: string): ArrayBuffer {
 }
 
 /**
+ * Array buffer to text, needed for crypto operations.
+ *
+ * @param arrayBuffer
+ */
+export function arrayBufferToText(arrayBuffer: ArrayBuffer): string {
+    return (new TextDecoder()).decode(arrayBuffer);
+}
+
+
+/**
  * Additional structure needed for operations such as sign or verify in the WebCrypto API. Can
  * be extracted from the WebCrypto representation of the crypto keys,
  * see {@link algorithmDataCR}.
  */
 export interface WebCryptoAPIData extends KeyOptions {
     name: string,
-    publicExponent ?: Uint8Array,
+    publicExponent ?: Uint8Array
 }
 
 /**
@@ -59,6 +77,11 @@ export interface WebCryptoAPIData extends KeyOptions {
 export function algorithmDataCR(key: CryptoKey): WebCryptoAPIData {
     const alg = key.algorithm;
     switch (alg.name) {
+        case "RSA-OAEP": {
+            return {
+                name: 'RSA-OAEP',
+            };
+        }
         case "RSA-PSS": {
             return {
                 name: 'RSA-PSS',
@@ -79,5 +102,63 @@ export function algorithmDataCR(key: CryptoKey): WebCryptoAPIData {
                 name: "Ed25519"
             };
         }
+    }
+}
+
+/**
+ * Merge the options with a default: encoding is base64, format is plain.
+ *
+ * @param opts
+ */
+function generateFullOptions(opts: OutputOptions | undefined): OutputOptions {
+    const defaultOptions: OutputOptions = {
+        encoding : "base64",
+        format   : "plain",
+    };
+    return (opts === undefined) ? defaultOptions : {...defaultOptions, ...opts};
+}
+
+/**
+ * Encode the result in base58 or base64, possibly in Multibase. The `options` argument dictates.
+ * Default is base64 encoding and plain output.
+ *
+ * @param options
+ * @param rawMessage
+ */
+export function encodeResult(options: OutputOptions | undefined, rawMessage: ArrayBuffer): string {
+    const fullOptions = generateFullOptions(options);
+
+    const UintMessage: Uint8Array = new Uint8Array(rawMessage);
+    if (fullOptions.format === "plain") {
+        // The difference between the two versions of base64 is still to be clarified...
+        return ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintMessage);
+        // return ((fullOptions.encoding === "base58") ? base58 : base64Plain).encode(UintMessage);
+    } else {
+        const output = ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintMessage);
+        return ((fullOptions.encoding === "base58") ? 'z' : 'u') + output;
+    }
+}
+
+/**
+ * Decode a string from encoded form. If the text is recognized as Multibase, the encoding format is there, otherwise
+ * the `options` argument rules.
+ *
+ * @param options
+ * @param encodedMessage
+ */
+export function decodeResult(options: OutputOptions | undefined, encodedMessage: string): ArrayBuffer {
+    const fullOptions = generateFullOptions(options);
+
+    if (isMultibase(encodedMessage)) {
+        // all information is in there...
+        if (encodedMessage[0] === 'z') {
+            return base58.decode(encodedMessage.slice(1));
+        } else if (encodedMessage[0] === 'u') {
+            return base64.decode(encodedMessage.slice(1));
+        } else {
+            throw new Error(`Invalid multibase value (begins with '${encodedMessage[0]}'`);
+        }
+    } else {
+        return ((fullOptions.encoding === "base58") ? base58 : base64).decode(encodedMessage);
     }
 }

@@ -1,3 +1,9 @@
+/**
+ * Common types for the package
+ *
+ * @module
+ */
+
 import { Multikey, Multibase } from "npm:multikey-webcrypto";
 
 /** JWK values for the elliptic curves that are relevant for this package */
@@ -25,8 +31,13 @@ export interface JWKKeyPair {
 export type Key     = JsonWebKey | Multibase;
 export type KeyPair = JWKKeyPair | Multikey;
 
-export interface SignatureOptions {
+/**
+ * Options for the output of signing/verifying and for encryption/decryption
+ */
+export interface OutputOptions {
+    /** Base encoding choice for the generated signature */
     encoding ?: BaseEncoding,
+    /** Format of the final signature: plain encoded text, or Multibase */
     format   ?: "plain" | "multibase"
 }
 

@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "test": "deno run  --unstable-sloppy-imports test/test.ts"
+    "test": "deno run  --unstable-sloppy-imports test/test.ts",
+    "doc": " deno doc --html index.ts"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1"

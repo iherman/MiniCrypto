@@ -1,5 +1,5 @@
 {
   "tasks": {
-    "doc": "deno doc --html index.ts"
+    "document": "deno doc --html index.ts"
   }
 }

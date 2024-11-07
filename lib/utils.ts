@@ -12,15 +12,27 @@ import { base58, base64 }                from "./multibase.ts";
 const SALT_LENGTH= 32;
 
 /**
- * Type guard for a Multibase value
+ * Type guard for a Multibase value.
+ *
+ * Beware! This function is not fool-proof. If a random string happens to start with 'z' or 'u', it will
+ * consider it as multibase, although there may be a possibility that it does not. To increase
+ * the probability of success, an attempt is made to decode the multibase value, making use
+ * of the fact that the decoder returns an `undefined` if the decoding fails.
+ *
  */
 // deno-lint-ignore no-explicit-any
 export function isMultibase(obj: any): obj is Multibase {
-    return (typeof obj === "string" && ((obj as string)[0] === 'z' || (obj as string)[0] === 'u'));
+    if (typeof obj === "string" && ((obj as string)[0] === 'z' || (obj as string)[0] === 'u')) {
+        const possible: string = obj as string;
+        const decoder = possible[0] === 'z' ? base58 : base64;
+        return decoder.decode(possible.slice(1)) !== undefined;
+    } else {
+        return false;
+    }
 }
 
 /**
- * Type guard for a Multikey object
+ * Type guard for a Multikey object.
  *
  * @param obj
  */
@@ -112,10 +124,26 @@ export function algorithmDataCR(key: CryptoKey): WebCryptoAPIData {
  */
 function generateFullOptions(opts: OutputOptions | undefined): OutputOptions {
     const defaultOptions: OutputOptions = {
-        encoding : "base64",
         format   : "plain",
     };
-    return (opts === undefined) ? defaultOptions : {...defaultOptions, ...opts};
+    if (opts === undefined) {
+        defaultOptions.encoding = "base64";
+        return defaultOptions;
+    } else {
+        const workOption: OutputOptions = {...defaultOptions, ...opts};
+        // We can be sure that the format is set; filling in
+        // the encoding if it is not set
+        if (workOption.format === "plain") {
+            if (workOption.encoding === undefined) {
+                workOption.encoding = "base64";
+            }
+        } else {
+            if (workOption.encoding === undefined) {
+                workOption.encoding = "base58";
+            }
+        }
+        return workOption;
+    }
 }
 
 /**
@@ -148,17 +176,24 @@ export function encodeResult(options: OutputOptions | undefined, rawMessage: Arr
  */
 export function decodeResult(options: OutputOptions | undefined, encodedMessage: string): ArrayBuffer {
     const fullOptions = generateFullOptions(options);
-
-    if (isMultibase(encodedMessage)) {
-        // all information is in there...
-        if (encodedMessage[0] === 'z') {
-            return base58.decode(encodedMessage.slice(1));
-        } else if (encodedMessage[0] === 'u') {
-            return base64.decode(encodedMessage.slice(1));
-        } else {
-            throw new Error(`Invalid multibase value (begins with '${encodedMessage[0]}'`);
+    const output: Uint8Array = ((): Uint8Array => {
+            if (fullOptions.format === "multibase") {
+                if (encodedMessage[0] === 'z') {
+                    return base58.decode(encodedMessage.slice(1));
+                } else if (encodedMessage[0] === 'u') {
+                    return base64.decode(encodedMessage.slice(1));
+                } else {
+                    throw new Error(`Invalid multibase value (begins with '${encodedMessage[0]}'`);
+                }
+            } else {
+                return ((fullOptions.encoding === "base58") ? base58 : base64).decode(encodedMessage);
+            }
         }
+    )();
+
+    if (output === undefined) {
+        throw new Error(`WTF: ${encodedMessage}, \n${JSON.stringify(fullOptions, null, 4)}`);
     } else {
-        return ((fullOptions.encoding === "base58") ? base58 : base64).decode(encodedMessage);
+        return output.buffer;
     }
 }

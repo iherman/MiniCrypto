@@ -32,7 +32,7 @@ export type Key     = JsonWebKey | Multibase;
 export type KeyPair = JWKKeyPair | Multikey;
 
 /**
- * Options for the output of signing/verifying and for encryption/decryption
+ * Options for the output of signing/verifying and for encryption/decryption.
  */
 export interface OutputOptions {
     /** Base encoding choice for the generated signature */

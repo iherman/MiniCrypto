@@ -13,10 +13,17 @@ import * as keys                       from "./keys.ts";
 /**
  * Sign a message.
  *
+ * The signature can be encoded
+ *
+ * * as plain string, with the value encoded, by default, in base64 or, on request, in base58
+ * * as a Multibase string, with the value encoded, by default, in base58 or, on request, in base64
+ *
+ * Default is using plain string (with base64).
+ *
  * @param message
  * @param userKeys - the private/public key pair
- * @param options - choice between base64 or base58 encoding, and between signature result in multibase or plain
- * @returns - signature in plain or multibase encoded formatt
+ * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding
+ * @returns - signature in plain or multibase encoded format
  */
 export async function sign(message: string, userKeys: KeyPair, options?: OutputOptions): Promise<string> {
 
@@ -41,15 +48,18 @@ export async function sign(message: string, userKeys: KeyPair, options?: OutputO
 /**
  * Verify a signature.
  *
- * Note that if the signature option refers to multibase, the values of encoding is ignored (and is deduced from the
+ * The option should be identical to the value used (if any) for signature, except that,
+ * if the signature option refers to multibase, the values of encoding is ignored (and is deduced from the
  * multibase itself).
  *
  * @param message
  * @param signature
  * @param key
- * @param options - choice between base64 or base58 encoding, and between signature result in multibase or plain.
+ * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding.
  */
 export async function verify(message: string, signature: string, key: Key, options?: OutputOptions): Promise<boolean> {
+    // The alternative to multibase is a JWK Key, which will surely fail as a multibase, so
+    // it is all right to use it even if incomplete:
     const cryptoKey = (utils.isMultibase(key)) ? await multikeyToCrypto(key) : await keys.JWKToCrypto(key)
 
     // Prepare the message for verification:
@@ -68,12 +78,21 @@ export async function verify(message: string, signature: string, key: Key, optio
 /**
  * Encrypt a message.
  *
+ * The generated ciphertext can be encoded
+ *
+ * * as plain string, with the value encoded, by default, in base64 or, on request, in base58
+ * * as a Multibase string, with the value encoded, by default, in base58 or, on request, in base64
+ *
+ * Default is using plain string (with base64).
+ *
  * @param message
  * @param userKey
- * @param options - choice between base64 or base58 encoding, and between signature result in multibase or plain
+ * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding
  * @return - ciphertext in plain or multibase encoded format
  */
 export async function encrypt(message: string, userKey: Key, options?: OutputOptions): Promise<string> {
+    // The alternative to multibase is a JWK Key, which will surely fail as a multibase, so
+    // it is all right to use it even if incomplete:
     if (utils.isMultibase(userKey)) {
         throw new Error("Multikey cannot be used for encryption");
     }
@@ -96,11 +115,17 @@ export async function encrypt(message: string, userKey: Key, options?: OutputOpt
 /**
  * Decrypt a ciphertext.
  *
+ * The option should be identical to the value used (if any) for signature, except that,
+ * if the signature option refers to multibase, the values of encoding is ignored (and is deduced from the
+ * multibase itself).
+ *
  * @param ciphertext
  * @param userKey
- * @param options - choice between base64 or base58 encoding, and between ciphertext in multibase or plain.
+ * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding.
  */
 export async function decrypt(ciphertext: string, userKey: Key, options?: OutputOptions): Promise<string> {
+    // The alternative to multibase is a JWK Key, which will surely fail as a multibase, so
+    // it is all right to use it even if incomplete:
     if (utils.isMultibase(userKey)) {
         throw new Error("Multikey cannot be used for encryption");
     }

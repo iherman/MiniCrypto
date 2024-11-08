@@ -1,11 +1,16 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@scure/base@*": "1.1.7",
     "jsr:@std/assert@*": "1.0.7",
     "jsr:@std/internal@^1.0.5": "1.0.5",
+    "npm:@jsonjoy.com/base64@*": "1.1.2_tslib@2.5.0",
     "npm:multikey-webcrypto@*": "0.5.0"
   },
   "jsr": {
+    "@scure/base@1.1.7": {
+      "integrity": "0b1fcb7fb1ecd92419773259a4de781cac13d0d85733fc43ea9511f1d678f968"
+    },
     "@std/assert@1.0.7": {
       "integrity": "64ce9fac879e0b9f3042a89b3c3f8ccfc9c984391af19e2087513a79d73e28c3",
       "dependencies": [
@@ -17,6 +22,12 @@
     }
   },
   "npm": {
+    "@jsonjoy.com/base64@1.1.2_tslib@2.5.0": {
+      "integrity": "sha512-q6XAnWQDIMA3+FTiOYajoYqySkO+JSat0ytXGSuRdq9uXE7o92gzuQwQM14xaCRlBLGq3v5miDGC4vkVTn54xA==",
+      "dependencies": [
+        "tslib"
+      ]
+    },
     "@noble/curves@1.6.0": {
       "integrity": "sha512-TlaHRXDehJuRNR9TfZDNQ45mMEd5dwUwmicsafcIX4SsNiqnCHKjE/1alYPd/lDRVhxdhUAlv8uEhMCI5zjIJQ==",
       "dependencies": [
@@ -31,6 +42,9 @@
       "dependencies": [
         "@noble/curves"
       ]
+    },
+    "tslib@2.5.0": {
+      "integrity": "sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg=="
     }
   }
 }

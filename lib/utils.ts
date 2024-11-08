@@ -4,28 +4,31 @@
  * @module
  */
 
-import {Crv, KeyOptions, OutputOptions } from "./types.ts";
-import { Multibase, Multikey }           from "npm:multikey-webcrypto";
-import { base58, base64 }                from "./multibase.ts";
-// import * as base64Plain                 from "./base64.ts";
+import {Crv, KeyOptions, OutputOptions }    from "./types.ts";
+import { Multibase, Multikey }              from "npm:multikey-webcrypto";
+import { base58, base64urlnopad as base64 } from "jsr:@scure/base";
 
 const SALT_LENGTH= 32;
 
 /**
  * Type guard for a Multibase value.
  *
- * Beware! This function is not fool-proof. If a random string happens to start with 'z' or 'u', it will
- * consider it as multibase, although there may be a possibility that it does not. To increase
- * the probability of success, an attempt is made to decode the multibase value, making use
- * of the fact that the decoder returns an `undefined` if the decoding fails.
- *
+ * Beware! Mathematically, this function is not fool-proof. After all, a random string
+ * may start with a 'z' or a 'u', and contain only characters that are part of the
+ * required base vocabulary. To increase the probability of success, an attempt is made to decode the multibase value.
+ * If successful, the value is indeed can be considered to be a multibase.
  */
 // deno-lint-ignore no-explicit-any
 export function isMultibase(obj: any): obj is Multibase {
     if (typeof obj === "string" && ((obj as string)[0] === 'z' || (obj as string)[0] === 'u')) {
         const possible: string = obj as string;
         const decoder = possible[0] === 'z' ? base58 : base64;
-        return decoder.decode(possible.slice(1)) !== undefined;
+        try {
+            decoder.decode(possible.slice(1));
+            return true
+        } catch (_e) {
+            return false;
+        }
     } else {
         return false;
     }

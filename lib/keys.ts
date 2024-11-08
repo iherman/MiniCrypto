@@ -7,7 +7,9 @@ import { WebCryptoAPIData }       from './utils.ts';
 /** JWK values for the key types that are relevant for this package */
 type Kty = "EC" | "RSA" | "OKP";
 
-/** Crypto identifier values that are relevant for this package */
+/** Crypto identifier values that are relevant for this package. "rsa" is an alias for "rsa-pss";
+ * "ed25519" is an alias for "eddsa".
+ * */
 export type CryptoAlgorithm = "ecdsa" | "eddsa" | "ed25519" | "rsa-pss" | "rsa" | "rsa-oaep";
 
 const DEFAULT_CURVE            = "P-256";

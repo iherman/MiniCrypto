@@ -121,32 +121,26 @@ export function algorithmDataCR(key: CryptoKey): WebCryptoAPIData {
 }
 
 /**
- * Merge the options with a default: encoding is base64, format is plain.
+ * Merge the options with a default. The default depends on the usage of Multikeys or not.
  *
  * @param opts
+ * @param multik - whether this is for a multikey/multibase environment or not
  */
-function generateFullOptions(opts: OutputOptions | undefined): OutputOptions {
-    const defaultOptions: OutputOptions = {
-        format   : "plain",
-    };
-    if (opts === undefined) {
-        defaultOptions.encoding = "base64";
-        return defaultOptions;
-    } else {
-        const workOption: OutputOptions = {...defaultOptions, ...opts};
-        // We can be sure that the format is set; filling in
-        // the encoding if it is not set
-        if (workOption.format === "plain") {
-            if (workOption.encoding === undefined) {
-                workOption.encoding = "base64";
+function generateFullOptions(opts: OutputOptions | undefined, multik: boolean): OutputOptions {
+    const defaultOptions = ((): OutputOptions => {
+        if (multik) {
+            return {
+                format: "multibase",
+                encoding: "base58",
             }
         } else {
-            if (workOption.encoding === undefined) {
-                workOption.encoding = "base58";
+            return {
+                format: "plain",
+                encoding: "base64",
             }
         }
-        return workOption;
-    }
+    })();
+    return (opts === undefined) ? defaultOptions : {...defaultOptions, ...opts};
 }
 
 /**
@@ -155,15 +149,14 @@ function generateFullOptions(opts: OutputOptions | undefined): OutputOptions {
  *
  * @param options
  * @param rawMessage
+ * @param multik - whether this is for a multikey/multibase environment or not
  */
-export function encodeResult(options: OutputOptions | undefined, rawMessage: ArrayBuffer): string {
-    const fullOptions = generateFullOptions(options);
+export function encodeResult(options: OutputOptions | undefined, rawMessage: ArrayBuffer, multik: boolean): string {
+    const fullOptions = generateFullOptions(options, multik);
 
     const UintMessage: Uint8Array = new Uint8Array(rawMessage);
     if (fullOptions.format === "plain") {
-        // The difference between the two versions of base64 is still to be clarified...
         return ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintMessage);
-        // return ((fullOptions.encoding === "base58") ? base58 : base64Plain).encode(UintMessage);
     } else {
         const output = ((fullOptions.encoding === "base58") ? base58 : base64).encode(UintMessage);
         return ((fullOptions.encoding === "base58") ? 'z' : 'u') + output;
@@ -176,9 +169,10 @@ export function encodeResult(options: OutputOptions | undefined, rawMessage: Arr
  *
  * @param options
  * @param encodedMessage
+ * @param multik - whether this is for a multikey/multibase environment or not
  */
-export function decodeResult(options: OutputOptions | undefined, encodedMessage: string): ArrayBuffer {
-    const fullOptions = generateFullOptions(options);
+export function decodeResult(options: OutputOptions | undefined, encodedMessage: string, multik: boolean): ArrayBuffer {
+    const fullOptions = generateFullOptions(options, multik);
     const output: Uint8Array = ((): Uint8Array => {
             if (fullOptions.format === "multibase") {
                 if (encodedMessage[0] === 'z') {

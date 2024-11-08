@@ -44,6 +44,9 @@ The keys can be used to sign a string message and to verify the signature. The s
 base64 (more precisely, base-64-url-no-pad) or base58 encoding (more precisely, base-58-btc) and, optionally, stored as a
 [Multibase](https://www.w3.org/TR/controller-document/#multibase-0) string.
 
+By default, if the key is in JWK, the signature is generated as a plain, base64 string. If the key is Multikey/Multibase, then
+the signature is stored as a Multibase, base58 string. Other combinations must be set explicitly.
+
 The coding examples (see the API for details):
 
 ```typescript
@@ -56,11 +59,13 @@ const signature64: string = await sign(message, keyPairRSAJWK);
 const isValid64: boolean = await sign(message, signature, keyPairRSAJWK.publicKeyJwk);
 
 // Signature stored as multibase base58
-const signature58: string = await sign(message, keyPairECDSAMK, {encoding: "base58", format: "multibase"});
-const isValid58: boolean = await sign(message, signature, keyPairECDSAMK.publicKeyMultibase, {format: "multibase"});
+const signature58: string = await sign(message, keyPairECDSAMK);
+const isValid58: boolean = await sign(message, signature, keyPairECDSAMK.publicKeyMultibase);
 ```
 
 ## Encryption/decryption
+
+By default, if the key is in JWK, the ciphertext is generated as a plain, base64 string. Other combinations must be set explicitly.
 
 ```typescript
 import { encrypt, decrypt } from "minicrypto";
@@ -73,9 +78,8 @@ const ciphertext64: string = await encrypt(message2, keyPairRSAOAEP.publicKeyJwk
 // Signature stored as multibase base58
 const ciphertext58: string = await encrypt(message2, keyPairRSAOAEP.publicKeyJwk, {encoding: "base58", format: "multibase"});
 
-// Decrypt a ciphertext stored in multibase (note that the option is not necessary, 
-// a multibase is recognized automatically
-const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.secretKeyJwk);
+// Decrypt a ciphertext stored in multibase. Note that the encoding field is not required, it is automatically recognized
+const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.secretKeyJwk, {format: "multibase"});
 ```
 
 ## Miscellaneous functions

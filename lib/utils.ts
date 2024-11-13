@@ -4,7 +4,7 @@
  * @module
  */
 
-import {Crv, KeyOptions, OutputOptions }    from "./types.ts";
+import {Crv, KeyOptions, OutputOptions, JWKKeyPair }    from "./types.ts";
 import { Multibase, Multikey }              from "npm:multikey-webcrypto";
 import { base58, base64urlnopad as base64 } from "jsr:@scure/base";
 
@@ -16,7 +16,7 @@ const SALT_LENGTH= 32;
  * Beware! Mathematically, this function is not fool-proof. After all, a random string
  * may start with a 'z' or a 'u', and contain only characters that are part of the
  * required base vocabulary. To increase the probability of success, an attempt is made to decode the multibase value.
- * If successful, the value is indeed can be considered to be a multibase.
+ * If successful, the value can indeed be accepted as a multibase with a reasonable probability.
  */
 // deno-lint-ignore no-explicit-any
 export function isMultibase(obj: any): obj is Multibase {
@@ -51,6 +51,46 @@ export function isMultikey(obj: object): obj is Multikey {
     } else {
         return false;
     }
+}
+
+/**
+ * Type guard for a CryptoKey object.
+ *
+ * @param obj
+ */
+export function isCryptoKey(obj: object): obj is CryptoKey {
+    return (
+        (obj as CryptoKey).algorithm !== undefined &&
+        (obj as CryptoKey).extractable !== undefined &&
+        (obj as CryptoKey).type !== undefined &&
+        (obj as CryptoKey).usages !== undefined
+    );
+}
+
+/**
+ * Type guard for a CryptoKeyPair object.
+ *
+ * @param obj
+ */
+export function isCryptoKeyPair(obj: object): obj is CryptoKeyPair {
+    return (
+        (obj as CryptoKeyPair).privateKey !== undefined &&
+        (obj as CryptoKeyPair).publicKey !== undefined &&
+        isCryptoKey((obj as CryptoKeyPair).privateKey) &&
+        isCryptoKey((obj as CryptoKeyPair).publicKey)
+    )
+}
+
+/**
+ * Type guard for a JWK Key Pair
+ *
+ * @param obj
+ */
+export function isJWKKeyPair(obj: object): obj is JWKKeyPair {
+    return (
+        (obj as JWKKeyPair).publicKeyJwk !== undefined &&
+        (obj as JWKKeyPair).secretKeyJwk !== undefined
+    )
 }
 
 /**

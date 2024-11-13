@@ -5,10 +5,40 @@
  * @module
  */
 import { Multikey, Multibase, multikeyToCrypto } from "npm:multikey-webcrypto";
-import {JWKKeyPair, Key, KeyPair, OutputOptions} from "./types.ts";
+import {JWKKeyPair, KeyPair, CryptoSecretKey, CryptoPublicKey, OutputOptions} from "./types.ts";
 import * as utils                                from "./utils.ts";
 import * as keys                                 from "./keys.ts";
 
+
+async function getSecretKey(userKeys: CryptoSecretKey, usage: KeyUsage[] = ["sign"]): Promise<CryptoKey> {
+    if (utils.isCryptoKeyPair(userKeys)) {
+        return (userKeys as CryptoKeyPair).privateKey;
+    } else if (utils.isCryptoKey(userKeys)) {
+        return userKeys as CryptoKey;
+    } else if (utils.isMultikey(userKeys)) {
+        return (await multikeyToCrypto(userKeys as Multikey)).privateKey;
+    } else if (utils.isJWKKeyPair(userKeys)) {
+        return (await keys.JWKToCrypto((userKeys as JWKKeyPair).secretKeyJwk, usage));
+    } else {
+        return (await keys.JWKToCrypto(userKeys as JsonWebKey, usage))
+    }
+}
+
+async function getPublicKey(userKeys: CryptoPublicKey, usage: KeyUsage[] = ["verify"]): Promise<CryptoKey> {
+    if (utils.isCryptoKeyPair(userKeys as object)) {
+        return (userKeys as CryptoKeyPair).publicKey;
+    } else if (utils.isCryptoKey(userKeys as object)) {
+        return userKeys as CryptoKey;
+    } else if (utils.isMultikey(userKeys as object)) {
+        return (await multikeyToCrypto(userKeys as Multikey)).publicKey;
+    } else if (utils.isMultibase(userKeys)) {
+        return (await multikeyToCrypto(userKeys as Multibase));
+    } else if (utils.isJWKKeyPair(userKeys)) {
+        return (await keys.JWKToCrypto((userKeys as JWKKeyPair).publicKeyJwk, usage));
+    } else {
+        return (await keys.JWKToCrypto(userKeys as JsonWebKey, usage))
+    }
+}
 
 /**
  * Sign a message.
@@ -25,23 +55,20 @@ import * as keys                                 from "./keys.ts";
  * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding
  * @returns - signature in plain or multibase encoded format
  */
-export async function sign(message: string, userKeys: KeyPair, options?: OutputOptions): Promise<string> {
-    const multik: boolean = utils.isMultikey(userKeys);
-    // Convert the encoded key-pair to crypto keys
-    const cryptoKeys: CryptoKeyPair = multik ?
-        await multikeyToCrypto(userKeys as Multikey) :
-        await keys.JWKKeyPairToCrypto(userKeys as JWKKeyPair);
+export async function sign(message: string, userKeys: CryptoSecretKey, options?: OutputOptions): Promise<string> {
+
+    const key = await getSecretKey(userKeys);
 
     // Prepare the message to signature:
     const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
 
     // The crypto algorithm to be used with this key:
-    const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(cryptoKeys.privateKey);
+    const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
     // The real crypto action
-    const rawSignature: ArrayBuffer = await crypto.subtle.sign(algorithm, cryptoKeys.privateKey, rawMessage);
+    const rawSignature: ArrayBuffer = await crypto.subtle.sign(algorithm, key, rawMessage);
 
-    return utils.encodeResult(options, rawSignature, multik)
+    return utils.encodeResult(options, rawSignature, utils.isMultikey(userKeys))
 }
 
 
@@ -54,26 +81,23 @@ export async function sign(message: string, userKeys: KeyPair, options?: OutputO
  *
  * @param message
  * @param signature
- * @param key
+ * @param userKey
  * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding.
  */
-export async function verify(message: string, signature: string, key: Key, options?: OutputOptions): Promise<boolean> {
-    const multik = utils.isMultibase(key);
-    const cryptoKey = multik ?
-        await multikeyToCrypto(key as Multibase) :
-        await keys.JWKToCrypto(key as JsonWebKey)
+export async function verify(message: string, signature: string, userKey: CryptoPublicKey, options?: OutputOptions): Promise<boolean> {
+    const key = await getPublicKey(userKey);
 
     // Prepare the message for verification:
     const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
 
     // Prepare the signature for verification
-    const rawSignature = utils.decodeResult(options, signature, multik);
+    const rawSignature = utils.decodeResult(options, signature, utils.isMultibase(userKey) || utils.isMultikey(userKey));
 
     // The crypto algorithm to be used with this key:
-    const algorithm : utils.WebCryptoAPIData = utils.algorithmDataCR(cryptoKey);
+    const algorithm : utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
     // The real crypto meat:
-    return crypto.subtle.verify(algorithm, cryptoKey, rawSignature, rawMessage)
+    return crypto.subtle.verify(algorithm, key, rawSignature, rawMessage)
 }
 
 /**
@@ -91,24 +115,17 @@ export async function verify(message: string, signature: string, key: Key, optio
  * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding
  * @return - ciphertext in plain or multibase encoded format
  */
-export async function encrypt(message: string, userKey: Key, options?: OutputOptions): Promise<string> {
-    // The alternative to multibase is a JWK Key, which will surely fail as a multibase, so
-    // it is all right to use it even if incomplete:
-    if (utils.isMultibase(userKey)) {
-        throw new Error("Multikey cannot be used for encryption");
-    }
-
-    // Convert the encoded key to crypto key
-    const cryptoKey: CryptoKey = await keys.JWKToCrypto(userKey, ["encrypt"]);
+export async function encrypt(message: string, userKey: CryptoPublicKey, options?: OutputOptions): Promise<string> {
+    const key = await getPublicKey(userKey, ["encrypt"]);
 
     // Prepare the message to encryption
     const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
 
     // The crypto algorithm to be used with this key:
-    const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(cryptoKey);
+    const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
     // The real crypto action
-    const rawCiphertext: ArrayBuffer = await crypto.subtle.encrypt(algorithm, cryptoKey, rawMessage);
+    const rawCiphertext: ArrayBuffer = await crypto.subtle.encrypt(algorithm, key, rawMessage);
 
     return utils.encodeResult(options, rawCiphertext, false);
 }
@@ -124,23 +141,17 @@ export async function encrypt(message: string, userKey: Key, options?: OutputOpt
  * @param userKey
  * @param options - choice between signature result in multibase or plain, and between base64 or base58 encoding.
  */
-export async function decrypt(ciphertext: string, userKey: Key, options?: OutputOptions): Promise<string> {
-    // The alternative to multibase is a JWK Key, which will surely fail as a multibase, so
-    // it is all right to use it even if incomplete:
-    if (utils.isMultibase(userKey)) {
-        throw new Error("Multikey cannot be used for encryption");
-    }
-
-    // Convert the encoded key to crypto key
-    const cryptoKey: CryptoKey = await keys.JWKToCrypto(userKey, ["decrypt"]);
+export async function decrypt(ciphertext: string, userKey: CryptoSecretKey, options?: OutputOptions): Promise<string> {
+    // Get hold of the secret key
+    const key = await getSecretKey(userKey, ["decrypt"]);
 
     // Prepare the ciphertext for decryption
     const rawCiphertext = utils.decodeResult(options, ciphertext, false);
 
     // The crypto algorithm to be used with this key:
-    const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(cryptoKey);
+    const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
-    const rawMessage = await crypto.subtle.decrypt(algorithm, cryptoKey, rawCiphertext);
+    const rawMessage = await crypto.subtle.decrypt(algorithm, key, rawCiphertext);
 
     return utils.arrayBufferToText(rawMessage);
 }

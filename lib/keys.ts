@@ -34,7 +34,7 @@ const DEFAULT_HASH_ALGORITHM = "SHA-256";
  * @return a Promise with a CryptoKeyPair
  * @async
  */
-export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): Promise<CryptoKeyPair> {
+export function generateKeys(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<CryptoKeyPair> {
     const modulusLength = ((): number => {
         if (options.modulusLength !== undefined) {
             if (options.modulusLength === 1024 || options.modulusLength === 2048 || options.modulusLength === 4096) {
@@ -107,7 +107,7 @@ export function createNewKeys(algorithm: CryptoAlgorithm, options: KeyOptions): 
  * @return a Promise with a JWK Key Pair
  * @async
  */
-export async function cryptoToJWK(pair: CryptoKeyPair): Promise<JWKKeyPair> {
+export async function cryptoToJWKPair(pair: CryptoKeyPair): Promise<JWKKeyPair> {
     const publicKeyJwk = await crypto.subtle.exportKey("jwk", pair.publicKey);
     const secretKeyJwk = await crypto.subtle.exportKey("jwk", pair.privateKey);
     return { publicKeyJwk, secretKeyJwk }
@@ -177,7 +177,7 @@ export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Pr
  * @return a Promise with a CryptoKey pair
  * @async
  */
-export async function JWKKeyPairToCrypto(keys: JWKKeyPair ): Promise<CryptoKeyPair> {
+export async function JWKKeyPairToCrypto(keys: JWKKeyPair): Promise<CryptoKeyPair> {
     // We have to separate the RSA OAEP case from the others to specify the "usage" setting.
     const usages: KeyUsage[] = ((): KeyUsage[] => {
             const publicUsage: KeyUsage = keys.publicKeyJwk?.alg?.startsWith("RSA-OAEP") ? "encrypt" : "verify";

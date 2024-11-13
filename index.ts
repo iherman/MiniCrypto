@@ -1,12 +1,17 @@
 import { cryptoToMultikey, Multikey }                  from "npm:multikey-webcrypto";
-import { createNewKeys, cryptoToJWK, CryptoAlgorithm } from "./lib/keys.ts";
+import { generateKeys, cryptoToJWKPair, CryptoAlgorithm } from "./lib/keys.ts";
 import { KeyOptions, JWKKeyPair }                      from "./lib/types.ts";
 
-export type { HashAlgorithm, KeyOptions, OutputOptions, BaseEncoding, Key } from "./lib/types.ts";
-export type { CryptoAlgorithm }     from "./lib/keys.ts";
+export type { HashAlgorithm,
+    KeyOptions, OutputOptions,
+    CryptoSecretKey, CryptoPublicKey,
+    BaseEncoding
+} from "./lib/types.ts";
+export type { CryptoAlgorithm }                                             from "./lib/keys.ts";
+export  { generateKeys, cryptoToJWKPair, JWKKeyPairToCrypto, JWKToCrypto }  from "./lib/keys.ts";
 export type { Multibase, Multikey } from "npm:multikey-webcrypto";
+export { multikeyToCrypto, cryptoToMultikey } from "npm:multikey-webcrypto";
 export { calculateHash as hash }    from "./lib/hash.ts";
-// export async function random(size: number): Promise<string> {};
 
 /**
  * Generate a new public/private key pair in one of the ecdsa/eddsa/RSA crypto algorithms
@@ -24,8 +29,8 @@ export { calculateHash as hash }    from "./lib/hash.ts";
  * @param options - depends on the algorithm chosen
  */
 export async function generateKeysJWK(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<JWKKeyPair> {
-    const keys: CryptoKeyPair = await createNewKeys(algorithm, options);
-    return cryptoToJWK(keys);
+    const keys: CryptoKeyPair = await generateKeys(algorithm, options);
+    return cryptoToJWKPair(keys);
 }
 
 /**
@@ -42,7 +47,7 @@ export async function generateKeysMK(algorithm: CryptoAlgorithm, options: KeyOpt
     if (algorithm === "rsa-pss" || algorithm === "rsa-oaep") {
         throw new Error("No Multikey definition for RSA.");
     }
-    const keys: CryptoKeyPair = await createNewKeys(algorithm, options);
+    const keys: CryptoKeyPair = await generateKeys(algorithm, options);
     return cryptoToMultikey(keys);
 }
 

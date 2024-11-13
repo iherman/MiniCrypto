@@ -28,8 +28,11 @@ export interface JWKKeyPair {
 }
 
 /** Just some shorthands... */
-export type Key     = JsonWebKey | Multibase;
-export type KeyPair = JWKKeyPair | Multikey;
+export type Key     = JsonWebKey | Multibase | CryptoKey;
+export type KeyPair = JWKKeyPair | Multikey  | CryptoKeyPair;
+
+export type CryptoSecretKey = JWKKeyPair | JsonWebKey | Multikey | CryptoKeyPair | CryptoKey
+export type CryptoPublicKey = JWKKeyPair | JsonWebKey | Multikey | Multibase | CryptoKeyPair | CryptoKey
 
 /**
  * Options for the output of signing/verifying and for encryption/decryption.

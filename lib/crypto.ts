@@ -48,7 +48,7 @@ async function getPublicKey(userKeys: CryptoPublicKey, usage: KeyUsage[] = ["ver
  * * as plain string, with the value encoded, by default, in base64 or, on request, in base58
  * * as a Multibase string, with the value encoded, by default, in base58 or, on request, in base64
  *
- * Default for JWK keys is plain string with base64, multibase with base58 otherwise.
+ * Default for Multikeys is multibase with base58; plain string with base64 otherwise.
  *
  * @param message
  * @param userKeys - the private/public key pair
@@ -105,10 +105,10 @@ export async function verify(message: string, signature: string, userKey: Crypto
  *
  * The generated ciphertext can be encoded
  *
- * * as plain string, with the value encoded, by default, in base64 or, on request, in base58
- * * as a Multibase string, with the value encoded, by default, in base58 or, on request, in base64
+ * * as plain string, with the value encoded, by default, in base64 or, on request, in base58.
+ * * as a Multibase string, with the value encoded, by default, in base58 or, on request, in base64.
  *
- * Default for JWK keys is plain string with base64, multibase with base58 otherwise.
+ * Default is plain string with base64.
  *
  * @param message
  * @param userKey

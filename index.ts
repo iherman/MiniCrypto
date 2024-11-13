@@ -1,17 +1,17 @@
-import { cryptoToMultikey, Multikey }                  from "npm:multikey-webcrypto";
+import { cryptoToMultikey, Multikey }                     from "npm:multikey-webcrypto";
 import { generateKeys, cryptoToJWKPair, CryptoAlgorithm } from "./lib/keys.ts";
-import { KeyOptions, JWKKeyPair }                      from "./lib/types.ts";
+import { KeyOptions, JWKKeyPair }                         from "./lib/types.ts";
 
-export type { HashAlgorithm,
-    KeyOptions, OutputOptions,
-    CryptoSecretKey, CryptoPublicKey,
-    BaseEncoding
-} from "./lib/types.ts";
+export type {
+    HashAlgorithm, KeyOptions, OutputOptions, CryptoSecretKey, CryptoPublicKey,
+    BaseEncoding, JWKKeyPair
+}                                                                           from "./lib/types.ts";
 export type { CryptoAlgorithm }                                             from "./lib/keys.ts";
 export  { generateKeys, cryptoToJWKPair, JWKKeyPairToCrypto, JWKToCrypto }  from "./lib/keys.ts";
-export type { Multibase, Multikey } from "npm:multikey-webcrypto";
-export { multikeyToCrypto, cryptoToMultikey } from "npm:multikey-webcrypto";
-export { calculateHash as hash }    from "./lib/hash.ts";
+export type { Multibase, Multikey }                                         from "npm:multikey-webcrypto";
+export { multikeyToCrypto, cryptoToMultikey }                               from "npm:multikey-webcrypto";
+export { calculateHash as hash }                                            from "./lib/hash.ts";
+export { sign, verify, encrypt, decrypt }                                   from "./lib/crypto.ts"
 
 /**
  * Generate a new public/private key pair in one of the ecdsa/eddsa/RSA crypto algorithms
@@ -27,6 +27,7 @@ export { calculateHash as hash }    from "./lib/hash.ts";
  *
  * @param algorithm - can be ecdsa, eddsa, Ed25519, or RSA
  * @param options - depends on the algorithm chosen
+ * @async
  */
 export async function generateKeysJWK(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<JWKKeyPair> {
     const keys: CryptoKeyPair = await generateKeys(algorithm, options);
@@ -42,6 +43,7 @@ export async function generateKeysJWK(algorithm: CryptoAlgorithm, options: KeyOp
  *
  * @param algorithm - can be ecdsa, eddsa, Ed25519
  * @param options - depends on the algorithm chosen
+ * @async
  */
 export async function generateKeysMK(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<Multikey> {
     if (algorithm === "rsa-pss" || algorithm === "rsa-oaep") {
@@ -50,7 +52,5 @@ export async function generateKeysMK(algorithm: CryptoAlgorithm, options: KeyOpt
     const keys: CryptoKeyPair = await generateKeys(algorithm, options);
     return cryptoToMultikey(keys);
 }
-
-export { sign, verify, encrypt, decrypt } from "./lib/crypto.ts"
 
 

@@ -1,5 +1,11 @@
 /**
- * Key management operations: creation, conversion to and from JWK format
+ * Key management operations: creation in binary Crypto, JWK, or Multikey formats. Note that Multikeys are only
+ * defined for ecdsa and eddsa; it cannot be used for rsa algorithms.
+ *
+ * The module also includes functions to convert JWK to and from binary crypto. See the separate
+ * `multikey-webcrypto` for similar operations with Multikey formats.
+ *
+ * @module
  */
 import { KeyOptions, JWKKeyPair } from './types.ts';
 import { WebCryptoAPIData }       from './utils.ts';
@@ -7,9 +13,13 @@ import { WebCryptoAPIData }       from './utils.ts';
 /** JWK values for the key types that are relevant for this package */
 type Kty = "EC" | "RSA" | "OKP";
 
-/** Crypto identifier values that are relevant for this package. "rsa" is an alias for "rsa-pss";
+/**
+ * Crypto identifier values that are relevant for this package. "rsa" is an alias for "rsa-pss";
  * "ed25519" is an alias for "eddsa".
- * */
+ *
+ * Only "rsa-oaep" can be used for encryption/decryption, but it cannot be used for signatures. All the
+ * others can only be used for signature and verification.
+ */
 export type CryptoAlgorithm = "ecdsa" | "eddsa" | "ed25519" | "rsa-pss" | "rsa" | "rsa-oaep";
 
 const DEFAULT_CURVE            = "P-256";
@@ -31,7 +41,6 @@ const DEFAULT_HASH_ALGORITHM = "SHA-256";
  *
  * @param algorithm - can be ecdsa, eddsa, Ed25519, or RSA
  * @param options - depends on the algorithm chosen
- * @return a Promise with a CryptoKeyPair
  * @async
  */
 export function generateKeys(algorithm: CryptoAlgorithm, options: KeyOptions = {}): Promise<CryptoKeyPair> {
@@ -104,7 +113,6 @@ export function generateKeys(algorithm: CryptoAlgorithm, options: KeyOptions = {
  * Convert a WebCrypto public/private key pair to JWK.
  *
  * @param pair
- * @return a Promise with a JWK Key Pair
  * @async
  */
 export async function cryptoToJWKPair(pair: CryptoKeyPair): Promise<JWKKeyPair> {
@@ -119,7 +127,6 @@ export async function cryptoToJWKPair(pair: CryptoKeyPair): Promise<JWKKeyPair> 
  * @param key
  * @param usage - can be `["verify"]/["encrypt"]` or `["sign"]/["decrypt"]` for a public or private key, respectively
  * @constructor
- * @return - a Promise with a CryptoKey
  * @async
  *
  */
@@ -172,9 +179,9 @@ export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Pr
 
 /**
  * Convert a public/private key pair in JWK to WebCrypto's binary representation.
+ *
  * @param keys
  * @constructor
- * @return a Promise with a CryptoKey pair
  * @async
  */
 export async function JWKKeyPairToCrypto(keys: JWKKeyPair): Promise<CryptoKeyPair> {

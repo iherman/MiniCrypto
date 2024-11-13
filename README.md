@@ -16,6 +16,7 @@ The functions can be used to generate a private/public (also referred to as secr
 
 A key pair is either stored as
 
+- (Binary) CryptoKeyPair, i.e., a pair of key stored in the native, binary format of the WebCryptoAPI implementation.
 - [WKKeyPair](https://www.w3.org/TR/controller-document/#JsonWebKey), i.e., a pair of key stored in JSON Web Key that conforms to [RFC7517](https://www.rfc-editor.org/rfc/rfc7517). The keys are relatively large JSON structures; advantage is that they can be managed easily.
 - [Multikey](https://www.w3.org/TR/controller-document/#Multikey), i.e., a pair of key stored in [Multibase](https://www.w3.org/TR/controller-document/#multibase-0). The key data are encoded and are therefore fairly opaque, but are extremely compact. Note that RSA keys cannot be stored in this format.
 
@@ -25,8 +26,11 @@ The coding examples (see the API for details):
 // Simple key generation
 import { generateKeysJWK, generateKeysMK } from "minicrypto";
 
+const keyPairEdDSACrypto = await generateKeys("eddsa");
+
+// Alternatively generate keys in JWK and Multikey formats.
 const keyPairEdDSAJWK = await generateKeysJWK("eddsa");
-const keyPairECDSAMK = await generateKeysMK("ecdsa");    // Default is "P-256"
+const keyPairECDSAMK = await generateKeysMK("ecdsa");
 
 // ECDSA Keys using P-384
 const keyPairECDSAMK384 = await generateKeysMK("ecdsa", {namedCurve: "P-384"});
@@ -35,7 +39,7 @@ const keyPairECDSAMK384 = await generateKeysMK("ecdsa", {namedCurve: "P-384"});
 const keyPairRSAPSS = await generateKeysJWK("rsa-pss", {modulusLength: 4096});  // Default is 2048
 
 // RSA Keys for encryption/decryption, using the default modulus length
-const keyPairRSAOAEP = await generateKeysJWK("rsa-oaep");
+const keyPairRSAOAEP = await generateKeys("rsa-oaep");
 ```
 
 ## Signature/verification
@@ -44,8 +48,11 @@ The keys can be used to sign a string message and to verify the signature. The s
 base64 (more precisely, base-64-url-no-pad) or base58 encoding (more precisely, base-58-btc) and, optionally, stored as a
 [Multibase](https://www.w3.org/TR/controller-document/#multibase-0) string.
 
-By default, if the key is in JWK, the signature is generated as a plain, base64 string. If the key is Multikey/Multibase, then
+By default, if the key is in JWK or using the binary format, the signature is generated as a plain, base64 string. If the key is Multikey/Multibase, then
 the signature is stored as a Multibase, base58 string. Other combinations must be set explicitly.
+
+Note that the `sign` and `verify` functions accept the keys in any formats, as pairs or as individual keys (private or secret, depending on the function).
+The only exception is that the `sign` function requires a full Multikey, the (Multibase encoded) secret key by itself is not accepted.
 
 The coding examples (see the API for details):
 
@@ -55,12 +62,12 @@ import { sign, verify } from "minicrypto";
 const message = "This is the string to be signed";
 
 // Signature stored as plain base64
-const signature64: string = await sign(message, keyPairRSAJWK);
-const isValid64: boolean = await sign(message, signature, keyPairRSAJWK.publicKeyJwk);
+const signature64: string = await sign(message, keyPairRSAPSS);
+const isValid64: boolean = await verify(message, signature, keyPairRSAPSS.publicKeyJwk);
 
 // Signature stored as multibase base58
 const signature58: string = await sign(message, keyPairECDSAMK);
-const isValid58: boolean = await sign(message, signature, keyPairECDSAMK.publicKeyMultibase);
+const isValid58: boolean = await verify(message, signature, keyPairECDSAMK.publicKeyMultibase);
 ```
 
 ## Encryption/decryption
@@ -73,13 +80,13 @@ import { encrypt, decrypt } from "minicrypto";
 const message2 = "This is the string to be encrypted";
 
 // Signature stored as plain base64
-const ciphertext64: string = await encrypt(message2, keyPairRSAOAEP.publicKeyJwk);
+const ciphertext64: string = await encrypt(message2, keyPairRSAOAEP.publicKey);
 
 // Signature stored as multibase base58
-const ciphertext58: string = await encrypt(message2, keyPairRSAOAEP.publicKeyJwk, {encoding: "base58", format: "multibase"});
+const ciphertext58: string = await encrypt(message2, keyPairRSAOAEP.publicKey, {encoding: "base58", format: "multibase"});
 
 // Decrypt a ciphertext stored in multibase. Note that the encoding field is not required, it is automatically recognized
-const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.secretKeyJwk, {format: "multibase"});
+const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.privateKey, {format: "multibase"});
 ```
 
 ## Miscellaneous functions

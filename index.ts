@@ -1,4 +1,4 @@
-import { cryptoToMultikey, Multikey }                     from "npm:multikey-webcrypto";
+import { cryptoToMultikey, Multikey }                     from "multikey-webcrypto";
 import { generateKeys, cryptoToJWKPair, CryptoAlgorithm } from "./lib/keys.ts";
 import { KeyOptions, JWKKeyPair }                         from "./lib/types.ts";
 
@@ -8,8 +8,8 @@ export type {
 }                                                                           from "./lib/types.ts";
 export type { CryptoAlgorithm }                                             from "./lib/keys.ts";
 export  { generateKeys, cryptoToJWKPair, JWKKeyPairToCrypto, JWKToCrypto }  from "./lib/keys.ts";
-export type { Multibase, Multikey }                                         from "npm:multikey-webcrypto";
-export { multikeyToCrypto, cryptoToMultikey }                               from "npm:multikey-webcrypto";
+export type { Multibase, Multikey }                                         from "multikey-webcrypto";
+export { multikeyToCrypto, cryptoToMultikey }                               from "multikey-webcrypto";
 export { calculateHash as hash }                                            from "./lib/hash.ts";
 export { sign, verify, encrypt, decrypt }                                   from "./lib/crypto.ts"
 

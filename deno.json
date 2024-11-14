@@ -1,5 +1,13 @@
 {
-  "tasks": {
-    "document": "deno doc --html index.ts"
-  }
+    "tasks": {
+        "document": "deno doc --output=APIDoc --html index.ts"
+    },
+    "imports": {
+        "@scure/base": "jsr:@scure/base",
+        "multikey-webcrypto": "npm:multikey-webcrypto",
+        "@std/assert": "jsr:@std/assert"
+    },
+    "lint" :{
+        "include": ["lib/"]
+    }
 }

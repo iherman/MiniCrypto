@@ -4,7 +4,7 @@
  *
  * @module
  */
-import { Multikey, Multibase, multikeyToCrypto } from "npm:multikey-webcrypto";
+import { Multikey, Multibase, multikeyToCrypto } from "multikey-webcrypto";
 import {JWKKeyPair, CryptoSecretKey, CryptoPublicKey, OutputOptions} from "./types.ts";
 import * as utils                                from "./utils.ts";
 import * as keys                                 from "./keys.ts";

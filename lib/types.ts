@@ -4,7 +4,7 @@
  * @module
  */
 
-import { Multikey, Multibase } from "npm:multikey-webcrypto";
+import { Multikey, Multibase } from "multikey-webcrypto";
 
 /** Elliptic curves that are used for this package. */
 export type Crv = "P-256" | "P-384";

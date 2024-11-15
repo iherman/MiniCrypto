@@ -30,26 +30,38 @@
 </nav>
 <div id="searchResults"></div><div id="content">
     <main><section >
-  <div class="space-y-2 flex-1 "><div class="space-y-7" id="module_doc"><div class="markdown"><h1 id="simple-interface-to-crypto">
+  <div class="space-y-2 flex-1 "><div class="space-y-7" id="module_doc"><div class="markdown"><p><em>NOT FINAL, DO NOT USE IT FOR CRITICAL APPLICATIONS</em></p>
+<h1 id="simple-interface-to-crypto">
 Simple interface to crypto</h1>
-<p>This package contains a set of functions that can be used to perform basic cryptographic functions without getting into all the intricacies of the full-blown cryptographic functions offered, for example, by the WebCrypto API. Obviously, some intricate options are not available, but that is all right: the goal is to provide an interface to the simplest usages.</p>
+<p>This package contains a set of functions that can be used to perform some basic cryptographic functions on top of the
+<a href="https://www.w3.org/TR/WebCryptoAPI/">WebCrypto API standard</a>, without getting into all the intricacies required by
+that API (or other, similar packages). Obviously, some of the more complex options are not available; goal is to provide
+an interface to the simplest usages.</p>
 <p>The interface functions are as follows.</p>
 <h2 id="key-generation">
 Key generation</h2>
-<p>The functions can be used to generate a private/public (also referred to as secret/public) keys. The package gives an option among three different asymmetric cryptographic key types:</p>
+<p>The functions can be used to generate a private/public (also referred to as secret/public) keys. The package gives an
+option among four different asymmetric cryptographic key types:</p>
 <ol>
-<li>Elliptic Curve Digital Signature Algorithm (ECDSA)[1]: widely used cryptographic method to sign/verify data. It has two &quot;versions&quot;: P-256 and P-384[2]. The latter is more secure, but the keys and the signatures are longer.</li>
-<li>Edwards-Curve Digital Signature Algorithm (EdDSA)[3] (also referred to as Ed25519): more recent than ECDSA, it has a somewhat simpler structure, usable to sign/verify.</li>
-<li>RSA-PSS: RSA variant used for sign/verify. The downside is that the keys and signatures are (sometimes significantly) longer than for EdDSA or ECDSA.</li>
-<li>RSA-OAEP: RSA variant used for encrypt/decrypt. Note that, in this package, that is the only key that can be used for encryption.</li>
+<li>Elliptic Curve Digital Signature Algorithm (ECDSA)[1]: widely used cryptographic method to sign/verify data. It has
+two &quot;versions&quot;: P-256 and P-384[2]. The latter is more secure, but the keys and the signatures are longer. These keys are
+usable for sign and verify.</li>
+<li>Edwards-Curve Digital Signature Algorithm (EdDSA)[3] (also referred to as Ed25519): more recent than ECDSA, it has a
+somewhat simpler structure. Usable to sign/verify.</li>
+<li>RSA-PSS: an RSA variant used for sign/verify. The downside is that the keys and signatures are (sometimes significantly)
+longer than for EdDSA or ECDSA.</li>
+<li>RSA-OAEP: RSA variant used for encrypt/decrypt. Note that, in this package, that is the only key that can be used
+for encryption and decryption (but cannot be used for sign/verify).</li>
 </ol>
 <p>A key pair is either stored as</p>
 <ul>
-<li>(Binary) CryptoKeyPair, i.e., a pair of key stored in the native, binary format of the WebCryptoAPI implementation.</li>
-<li><a href="https://www.w3.org/TR/controller-document/#JsonWebKey">WKKeyPair</a>, i.e., a pair of key stored in JSON Web Key that conforms to <a href="https://www.rfc-editor.org/rfc/rfc7517">RFC7517</a>. The keys are relatively large JSON structures; advantage is that they can be managed easily.</li>
-<li><a href="https://www.w3.org/TR/controller-document/#Multikey">Multikey</a>, i.e., a pair of key stored in <a href="https://www.w3.org/TR/controller-document/#multibase-0">Multibase</a>. The key data are encoded and are therefore fairly opaque, but are extremely compact. Note that RSA keys cannot be stored in this format.</li>
+<li>(Binary) CryptoKeyPair, i.e., a pair of key stored in the native, binary format of the WebCrypto API implementation.</li>
+<li><a href="https://www.w3.org/TR/controller-document/#JsonWebKey">WKKeyPair</a>, i.e., a pair of key stored in JSON Web Key that conforms to <a href="https://www.rfc-editor.org/rfc/rfc7517">RFC7517</a>. The keys are relatively
+large JSON structures; advantage is that they can be managed easily by JSON tools.</li>
+<li><a href="https://www.w3.org/TR/controller-document/#Multikey">Multikey</a>, i.e., a pair of key stored in <a href="https://www.w3.org/TR/controller-document/#multibase-0">Multibase</a>. The key data are encoded as strings and are therefore fairly
+opaque, but are extremely compact. Note that RSA keys cannot be stored in this format (there is no specification for this).</li>
 </ul>
-<p>The coding examples (see the API for details):</p>
+<p>The coding examples (see the API documentation for details):</p>
 <pre class=" highlight"><code class="language-typescript"><span style="font-style:italic;color:#969896;">// Simple key generation
 </span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ generateKeysJWK, generateKeysMK } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;minicrypto&quot;</span><span style="color:#323232;">;
 </span><span style="color:#323232;">
@@ -93,12 +105,13 @@ const keyPairRSAOAEP = await generateKeys(&quot;rsa-oaep&quot;);
 <h2 id="signatureverification">
 Signature/verification</h2>
 <p>The keys can be used to sign a string message and to verify the signature. The signature itself is encoded as
-base64 (more precisely, base-64-url-no-pad) or base58 encoding (more precisely, base-58-btc) and, optionally, stored as a
-<a href="https://www.w3.org/TR/controller-document/#multibase-0">Multibase</a> string.</p>
-<p>By default, if the key is in JWK or using the binary format, the signature is generated as a plain, base64 string. If the key is Multikey/Multibase, then
-the signature is stored as a Multibase, base58 string. Other combinations must be set explicitly.</p>
-<p>Note that the <code>sign</code> and <code>verify</code> functions accept the keys in any formats, as pairs or as individual keys (private or secret, depending on the function).
-The only exception is that the <code>sign</code> function requires a full Multikey, the (Multibase encoded) secret key by itself is not accepted.</p>
+base64 (more precisely, base-64-url-no-pad) or base58 encoding (more precisely, base-58-btc) and, optionally, stored as
+a <a href="https://www.w3.org/TR/controller-document/#multibase-0">Multibase</a> string. By default, if the key is in JWK or using the binary format, the signature is generated as a
+plain, base64 string. If the key is Multikey/Multibase, then by default the signature is stored as a Multibase, base58
+string. Other combinations must be set explicitly.</p>
+<p>Note that the <code>sign</code> and <code>verify</code> functions accept the keys in any formats, i.e., as pairs or as individual keys
+(private or secret, depending on the function). The only exception is that the <code>sign</code> function requires a full
+Multikey, the (Multibase encoded) secret key by itself is not accepted.</p>
 <p>The coding examples (see the API for details):</p>
 <pre class=" highlight"><code class="language-typescript"><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ sign, verify } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;minicrypto&quot;</span><span style="color:#323232;">;
 </span><span style="color:#323232;">
@@ -130,7 +143,8 @@ const isValid58: boolean = await verify(message, signature, keyPairECDSAMK.publi
 </button><code></code></pre>
 <h2 id="encryptiondecryption">
 Encryption/decryption</h2>
-<p>By default, if the key is in JWK, the ciphertext is generated as a plain, base64 string. Other combinations must be set explicitly.</p>
+<p>By default, if the key is in JWK, the ciphertext is generated as a plain, base64 string. Other combinations must be set
+explicitly.</p>
 <pre class=" highlight"><code class="language-typescript"><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ encrypt, decrypt } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;minicrypto&quot;</span><span style="color:#323232;">;
 </span><span style="color:#323232;">
 </span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">message2 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#183691;">&quot;This is the string to be encrypted&quot;</span><span style="color:#323232;">;
@@ -165,32 +179,39 @@ const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.pr
 Miscellaneous functions</h2>
 <h3 id="hashing">
 Hashing</h3>
-<p>Very frequently used for various type of data. There are many hash functions around, the most widely used these days is &quot;SHA-256&quot;, with &quot;SHA-384&quot; as a more secure alternative.</p>
+<p>Very frequently used for various type of data. There are many hash functions around, the most widely used these days
+is &quot;SHA-256&quot;, with &quot;SHA-384&quot; as a more secure alternative.</p>
 <pre class=" highlight"><code class="language-typescript"><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ hash } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;minicrypto&quot;</span><span style="color:#323232;">;
 </span><span style="color:#323232;">
 </span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">message </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#183691;">&quot;This is the string to be hashed&quot;</span><span style="color:#323232;">;
 </span><span style="color:#323232;">
 </span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">hash_256 </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">hash</span><span style="color:#323232;">(message)              
 </span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">hash_384 </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">hash</span><span style="color:#323232;">(message, </span><span style="color:#183691;">&quot;SHA-384&quot;</span><span style="color:#323232;">);  </span><span style="font-style:italic;color:#969896;">// Default is SHA-256
-</span><span style="color:#323232;">
 </span></code><button class="context_button" data-copy="import { hash } from &quot;minicrypto&quot;;
 
 const message = &quot;This is the string to be hashed&quot;;
 
 const hash_256 = await hash(message)              
 const hash_384 = await hash(message, &quot;SHA-384&quot;);  // Default is SHA-256
-
 "><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="2" y="2" width="7" height="7" fill="none"/>
 <rect x="6" y="6" width="7" height="7" fill="none"/>
 <path d="M1.55566 2.7C1.55566 2.03726 2.09292 1.5 2.75566 1.5H8.75566C9.41841 1.5 9.95566 2.03726 9.95566 2.7V5.1H12.3557C13.0184 5.1 13.5557 5.63726 13.5557 6.3V12.3C13.5557 12.9627 13.0184 13.5 12.3557 13.5H6.35566C5.69292 13.5 5.15566 12.9627 5.15566 12.3V9.9H2.75566C2.09292 9.9 1.55566 9.36274 1.55566 8.7V2.7ZM6.35566 9.9V12.3H12.3557V6.3H9.95566V8.7C9.95566 9.36274 9.41841 9.9 8.75566 9.9H6.35566ZM8.75566 8.7V2.7H2.75566V8.7H8.75566Z" fill="#232323"/>
 </svg>
 </button><code></code></pre>
+<h3 id="key-conversions">
+Key conversions</h3>
+<p>The package contains some functions to convert JWK keys or key pairs to and from their binary equivalents. For the sake
+of convenience, ths package also re-exports similar functions for Multikeys and Multibase, though it is implemented
+by a different, underlying package called <a href="https://www.npmjs.com/package/multikey-webcrypto">multikey-webcrypto</a>.</p>
 <hr />
 <ol>
-<li>FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and Technology. 3 February 2023. National Standard. URL: <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</a></li>
-<li>Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters. Lily Chen; Dustin Moody; Karen Randall; Andrew Regenscheid; Angela Robinson. National Institute of Standards and Technology. February 2023.</li>
-<li>FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and Technology. 3 February 2023. National Standard. URL: <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</a></li>
+<li>FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and
+Technology. 3 February 2023. National Standard. URL: <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</a></li>
+<li>Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters. Lily Chen; Dustin Moody;
+Karen Randall; Andrew Regenscheid; Angela Robinson. National Institute of Standards and Technology. February 2023.</li>
+<li>FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and
+Technology. 3 February 2023. National Standard. URL: <a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf">https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf</a></li>
 </ol>
 </div></div>
 </div>
@@ -228,7 +249,7 @@ const hash_384 = await hash(message, &quot;SHA-384&quot;);  // Default is SHA-25
 	<path fill-rule="evenodd" clip-rule="evenodd" d="M5.76748 11.8159C5.5378 11.577 5.54525 11.1972 5.78411 10.9675L8.93431 8L5.78411 5.0325C5.54525 4.80282 5.5378 4.423 5.76748 4.18413C5.99715 3.94527 6.37698 3.93782 6.61584 4.1675L10.2158 7.5675C10.3335 7.68062 10.4 7.83679 10.4 8C10.4 8.16321 10.3335 8.31938 10.2158 8.4325L6.61584 11.8325C6.37698 12.0622 5.99715 12.0547 5.76748 11.8159Z" fill="currentColor" />
 </svg>
 </a></nav><nav class="documentNavigation">
-          <h3>Document Navigation</h3><ul><li><a href="#simple-interface-to-crypto" title="Simple interface to crypto">Simple interface to crypto</a></li><li><ul><li><a href="#key-generation" title="Key generation">Key generation</a></li><li><a href="#signatureverification" title="Signature/verification">Signature/verification</a></li><li><a href="#encryptiondecryption" title="Encryption/decryption">Encryption/decryption</a></li><li><a href="#miscellaneous-functions" title="Miscellaneous functions">Miscellaneous functions</a></li><li><ul><li><a href="#hashing" title="Hashing">Hashing</a></li></ul></li></ul></li></ul></nav></div>
+          <h3>Document Navigation</h3><ul><li><a href="#simple-interface-to-crypto" title="Simple interface to crypto">Simple interface to crypto</a></li><li><ul><li><a href="#key-generation" title="Key generation">Key generation</a></li><li><a href="#signatureverification" title="Signature/verification">Signature/verification</a></li><li><a href="#encryptiondecryption" title="Encryption/decryption">Encryption/decryption</a></li><li><a href="#miscellaneous-functions" title="Miscellaneous functions">Miscellaneous functions</a></li><li><ul><li><a href="#hashing" title="Hashing">Hashing</a></li><li><a href="#key-conversions" title="Key conversions">Key conversions</a></li></ul></li></ul></li></ul></nav></div>
   </div></div>
 </div>
 </div>

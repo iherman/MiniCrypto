@@ -64,6 +64,8 @@ dist
 .vscode
 .idea
 .Attic/
+npm/
+.npm/
 TODO.md
 minicrypto.ts
 

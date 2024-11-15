@@ -3,13 +3,15 @@
     "version": "0.5.0",
     "exports": "./index.ts",
     "tasks": {
-        "docs": "deno -A tools/copyReadme.ts > minicrypto.ts; deno doc --html --name=\"Mini Crypto API\" minicrypto.ts; /bin/rm minicrypto.ts",
-        "internal": "deno doc --html --name=\"Mini Crypto Internals\" --output=\"./devDocs\" index.ts lib/*.ts"
+        "docs": "deno run -A tools/copy_readme.ts > minicrypto.ts; deno doc --html --name=\"Mini Crypto API\" minicrypto.ts; /bin/rm minicrypto.ts",
+        "internal": "deno doc --html --name=\"Mini Crypto Internals\" --output=\"./devDocs\" index.ts lib/*.ts",
+        "test": "deno test --ignore=\".npm/\"",
+        "npm": "deno run -A tools/build_npm.ts"
     },
     "imports": {
-        "@scure/base": "jsr:@scure/base@1.1.7",
-        "multikey-webcrypto": "npm:multikey-webcrypto@0.5.3",
-        "@std/assert": "jsr:@std/assert@1.0.8"
+        "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
+        "@scure/base": "npm:@scure/base@1.1.7",
+        "multikey-webcrypto": "npm:multikey-webcrypto@0.5.3"
     },
     "lint" :{
         "include": ["lib/"]

@@ -1,4 +1,4 @@
-import { assertEquals, assert } from "@std/assert";
+import { assertEquals, assert } from "jsr:@std/assert";
 import {
     generateKeysJWK, generateKeysMK,
     generateKeys,

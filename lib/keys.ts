@@ -7,8 +7,8 @@
  *
  * @module
  */
-import { KeyOptions, JWKeyPair } from './types.ts';
-import { WebCryptoAPIData }       from './utils.ts';
+import type { KeyOptions, JWKeyPair } from './types.ts';
+import type { WebCryptoAPIData }      from './utils.ts';
 
 /** JWK values for the key types that are relevant for this package */
 type Kty = "EC" | "RSA" | "OKP";
@@ -55,13 +55,13 @@ export function generateKeys(algorithm: CryptoAlgorithm, options: KeyOptions = {
         return DEFAULT_MODULUS_LENGTH;
     })();
 
-    interface KeyOptions {
+    interface KeyGenerationOptions {
         cryptoDetails: WebCryptoAPIData,
         keyUsages: KeyUsage[],
     }
     const DEFAULT_KEY_USAGES: KeyUsage[] = ["sign", "verify"];
 
-    const cryptoOptions: KeyOptions = ((): KeyOptions => {
+    const cryptoOptions: KeyGenerationOptions = ((): KeyGenerationOptions => {
         switch(algorithm.toLowerCase()) {
             case "rsa-oaep": {
                 return {

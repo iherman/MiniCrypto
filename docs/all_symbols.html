@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>All Symbols - documentation</title>
+  <title>All Symbols - Mini Crypto API documentation</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="doc-current-file" content="">
@@ -18,7 +18,7 @@
 <div class="ddoc">
 <div><nav class="top-0 sticky bg-white z-50 py-3 h-14" id="topnav">
   <div class="h-full">
-    <div><ul class="breadcrumbs"><li><a href=".&#x2F;" class="contextLink">index</a></li><span class="text-[#0F172A]"><svg
+    <div><ul class="breadcrumbs"><li><a href=".&#x2F;" class="contextLink">Mini Crypto API</a></li><span class="text-[#0F172A]"><svg
 	width="16"
 	height="16"
 	viewBox="0 0 16 16"
@@ -86,11 +86,11 @@
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Used to overload the key argument for sign and decrypt operations. Note that a plain Multibase is not an option; themultikey secret key alone may not contain all necessary information.</p>
 </div></div></div>
-    </div><div id="namespace_cryptotojwkpair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_cryptotojwk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;cryptoToJWKPair.html" title="cryptoToJWKPair">cryptoToJWKPair</a>
+		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;cryptoToJWK.html" title="cryptoToJWK">cryptoToJWK</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Convert a WebCrypto public/private key pair to JWK.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Utility function: get a JWK representation from a binary crypto key/key pair.</p>
 </div></div></div>
     </div><div id="namespace_decrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
@@ -134,22 +134,16 @@
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Crypto hash values that are used for this package. &quot;SHA-256&quot; is the usual default.</p>
 </div></div></div>
-    </div><div id="namespace_jwkkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
+    </div><div id="namespace_jwkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKKeyPair.html" title="JWKKeyPair">JWKKeyPair</a>
+		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKeyPair.html" title="JWKeyPair">JWKeyPair</a>
 
-	      <div class="namespaceItemContentDoc"><span class="italic">No documentation available</span></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKKeyPair.html#property_publickeyjwk">publicKeyJwk</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKKeyPair.html#property_secretkeyjwk">secretKeyJwk</a></li></ul></div>
-    </div><div id="namespace_jwkkeypairtocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKKeyPairToCrypto.html" title="JWKKeyPairToCrypto">JWKKeyPairToCrypto</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Convert a public/private key pair in JWK to WebCrypto's binary representation.</p>
-</div></div></div>
+	      <div class="namespaceItemContentDoc"><span class="italic">No documentation available</span></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKeyPair.html#property_publickeyjwk">publicKeyJwk</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKeyPair.html#property_secretkeyjwk">secretKeyJwk</a></li></ul></div>
     </div><div id="namespace_jwktocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKToCrypto.html" title="JWKToCrypto">JWKToCrypto</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Convert a JWK key representation of a Key to WebCrypto's representation.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Utility function: get a binary crypto representation from a JWK encoded key/key pair.</p>
 </div></div></div>
     </div><div id="namespace_keyoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">

@@ -7,7 +7,7 @@
  *
  * @module
  */
-import { KeyOptions, JWKKeyPair } from './types.ts';
+import { KeyOptions, JWKeyPair } from './types.ts';
 import { WebCryptoAPIData }       from './utils.ts';
 
 /** JWK values for the key types that are relevant for this package */
@@ -110,18 +110,6 @@ export function generateKeys(algorithm: CryptoAlgorithm, options: KeyOptions = {
 }
 
 /**
- * Convert a WebCrypto public/private key pair to JWK.
- *
- * @param pair
- * @async
- */
-export async function cryptoToJWKPair(pair: CryptoKeyPair): Promise<JWKKeyPair> {
-    const publicKeyJwk = await crypto.subtle.exportKey("jwk", pair.publicKey);
-    const secretKeyJwk = await crypto.subtle.exportKey("jwk", pair.privateKey);
-    return { publicKeyJwk, secretKeyJwk }
-}
-
-/**
  * Convert a JWK key representation of a Key to WebCrypto's representation.
  *
  * @param key
@@ -130,7 +118,7 @@ export async function cryptoToJWKPair(pair: CryptoKeyPair): Promise<JWKKeyPair> 
  * @async
  *
  */
-export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Promise<CryptoKey> {
+export function JWKeyToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Promise<CryptoKey> {
     const algorithm = ((): RsaHashedImportParams | EcKeyImportParams => {
         switch (key.kty as Kty) {
             // deno-lint-ignore no-fallthrough
@@ -184,7 +172,7 @@ export function JWKToCrypto(key: JsonWebKey, usage: KeyUsage[] = ["verify"]): Pr
  * @constructor
  * @async
  */
-export async function JWKKeyPairToCrypto(keys: JWKKeyPair): Promise<CryptoKeyPair> {
+export async function JWKeyPairToCrypto(keys: JWKeyPair): Promise<CryptoKeyPair> {
     // We have to separate the RSA OAEP case from the others to specify the "usage" setting.
     const usages: KeyUsage[] = ((): KeyUsage[] => {
             const publicUsage: KeyUsage = keys.publicKeyJwk?.alg?.startsWith("RSA-OAEP") ? "encrypt" : "verify";
@@ -194,8 +182,8 @@ export async function JWKKeyPairToCrypto(keys: JWKKeyPair): Promise<CryptoKeyPai
     )();
 
     const [ publicKey , privateKey ]: [CryptoKey,CryptoKey] = await Promise.all([
-        JWKToCrypto(keys.publicKeyJwk, [usages[0]]),
-        JWKToCrypto(keys.secretKeyJwk, [usages[1]]),
+        JWKeyToCrypto(keys.publicKeyJwk, [usages[0]]),
+        JWKeyToCrypto(keys.secretKeyJwk, [usages[1]]),
     ]);
     return {
         publicKey, privateKey

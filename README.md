@@ -105,8 +105,9 @@ const hash_384 = await hash(message, "SHA-384");  // Default is SHA-256
 
 ```
 
+---
 
 
-[1] FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and Technology. 3 February 2023. National Standard. URL: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf  
-[2] Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters. Lily Chen; Dustin Moody; Karen Randall; Andrew Regenscheid; Angela Robinson. National Institute of Standards and Technology. February 2023.  
-[3] FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and Technology. 3 February 2023. National Standard. URL: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf
+1. FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and Technology. 3 February 2023. National Standard. URL: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf  
+2. Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters. Lily Chen; Dustin Moody; Karen Randall; Andrew Regenscheid; Angela Robinson. National Institute of Standards and Technology. February 2023.  
+3. FIPS PUB 186-5: Digital Signature Standard (DSS). U.S. Department of Commerce/National Institute of Standards and Technology. 3 February 2023. National Standard. URL: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-5.pdf

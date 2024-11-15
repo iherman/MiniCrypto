@@ -1,6 +1,6 @@
 {
     "tasks": {
-        "document": "deno doc --output=APIDoc --html index.ts"
+        "document": "deno doc --html index.ts"
     },
     "imports": {
         "@scure/base": "jsr:@scure/base",

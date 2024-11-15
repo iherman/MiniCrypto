@@ -46,5 +46,12 @@
     "tslib@2.5.0": {
       "integrity": "sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg=="
     }
+  },
+  "workspace": {
+    "dependencies": [
+      "jsr:@scure/base@*",
+      "jsr:@std/assert@*",
+      "npm:multikey-webcrypto@*"
+    ]
   }
 }

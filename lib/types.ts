@@ -29,7 +29,7 @@ export interface KeyOptions {
     modulusLength ?: number
 }
 
-export interface JWKKeyPair {
+export interface JWKeyPair {
     publicKeyJwk : JsonWebKey;
     secretKeyJwk : JsonWebKey;
 }
@@ -38,12 +38,12 @@ export interface JWKKeyPair {
  * Used to overload the key argument for sign and decrypt operations. Note that a plain Multibase is not an option; the
  * multikey secret key alone may not contain all necessary information.
  */
-export type CryptoSecretKey = CryptoKeyPair | CryptoKey | JWKKeyPair | JsonWebKey | Multikey
+export type CryptoSecretKey = CryptoKeyPair | CryptoKey | JWKeyPair | JsonWebKey | Multikey
 
 /**
  * Used to overload the key argument for verify and encrypt operations
  */
-export type CryptoPublicKey = CryptoKeyPair | CryptoKey | JWKKeyPair | JsonWebKey  | Multikey | Multibase
+export type CryptoPublicKey = CryptoKeyPair | CryptoKey | JWKeyPair | JsonWebKey  | Multikey | Multibase
 
 /**
  * Options for the output of signing/verifying and for encryption/decryption.

@@ -4,7 +4,7 @@
  * @module
  */
 
-import { Crv, KeyOptions, OutputOptions, JWKKeyPair } from "./types.ts";
+import { Crv, KeyOptions, OutputOptions, JWKeyPair } from "./types.ts";
 import { Multibase, Multikey }                        from "multikey-webcrypto";
 import { base58, base64urlnopad as base64 }           from "@scure/base";
 
@@ -86,10 +86,10 @@ export function isCryptoKeyPair(obj: object): obj is CryptoKeyPair {
  *
  * @param obj
  */
-export function isJWKKeyPair(obj: object): obj is JWKKeyPair {
+export function isJWKKeyPair(obj: object): obj is JWKeyPair {
     return (
-        (obj as JWKKeyPair).publicKeyJwk !== undefined &&
-        (obj as JWKKeyPair).secretKeyJwk !== undefined
+        (obj as JWKeyPair).publicKeyJwk !== undefined &&
+        (obj as JWKeyPair).secretKeyJwk !== undefined
     )
 }
 

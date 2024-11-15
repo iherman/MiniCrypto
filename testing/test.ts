@@ -2,10 +2,11 @@ import { assertEquals, assert } from "@std/assert";
 import {
     generateKeysJWK, generateKeysMK,
     generateKeys,
-    cryptoToJWKPair,
+    cryptoToJWK, JWKToCrypto,
     cryptoToMultikey,
     sign, verify,
-    encrypt, decrypt
+    encrypt, decrypt,
+    hash
 } from "../index.ts";
 import { isMultibase, isMultikey } from "../lib/utils.ts";
 
@@ -37,7 +38,7 @@ Deno.test("1.2 Signature test: default crypto pair with eddsa, keys spelled out"
 Deno.test("1.3 Signature test: default crypto pair with eddsa, explicitly converted to JWK for crypto operations",
     async () => {
         const keyPairCrypto = await generateKeys("eddsa");
-        const keyPair = await cryptoToJWKPair(keyPairCrypto);
+        const keyPair = await cryptoToJWK(keyPairCrypto);
         const signature: string = await sign(message, keyPair);
         const verified: boolean = await verify(message, signature, keyPair);
         assert(verified, "Signature verification failed");
@@ -47,7 +48,7 @@ Deno.test("1.3 Signature test: default crypto pair with eddsa, explicitly conver
 Deno.test("1.4 Signature test: default crypto pair with eddsa, explicitly converted to JWK for crypto operations, keys spelled out, ",
     async () => {
         const keyPairCrypto = await generateKeys("eddsa");
-        const keyPair = await cryptoToJWKPair(keyPairCrypto);
+        const keyPair = await cryptoToJWK(keyPairCrypto);
         const signature: string = await sign(message, keyPair.secretKeyJwk);
         const verified: boolean = await verify(message, signature, keyPair.publicKeyJwk);
         assert(verified, "Signature verification failed");
@@ -279,3 +280,31 @@ Deno.test.ignore("6.4 Signature test: JWK with rsa-pss, with modulus length of 4
 );
 
 
+/* *****************************************************************************************
+* Tests with rsa keys in JWK, generating a signature,
+* stored in plain, base64 format
+****************************************************************************************** */
+Deno.test("7.1 Utility function test: hashing a text should go through without exception",
+    async () => {
+        hash(message);
+    }
+);
+
+Deno.test("7.2 Utility function test: converting a JWK key pair to crypto and back should be without change",
+    async () => {
+        const keyPair = await generateKeysJWK("eddsa");
+        const cryptoKeyPair = await JWKToCrypto(keyPair);
+        const newKeyPair = await cryptoToJWK(cryptoKeyPair);
+        assert(JSON.stringify(newKeyPair) === JSON.stringify(keyPair));
+    }
+);
+
+Deno.test("7.3 Utility function test: converting a JWK key to crypto and back should be without change",
+    async () => {
+        const keyPair = await generateKeysJWK("eddsa");
+        const key = keyPair.publicKeyJwk;
+        const cryptoKey = await JWKToCrypto(key);
+        const newKey = await cryptoToJWK(cryptoKey);
+        assert(JSON.stringify(newKey) === JSON.stringify(key));
+    }
+);

@@ -1,6 +1,7 @@
 {
     "tasks": {
-        "document": "deno doc --html index.ts"
+        "docs": "deno -A tools/copyReadme.ts > minicrypto.ts; deno doc --html --name=\"Mini Crypto API\" minicrypto.ts; /bin/rm minicrypto.ts",
+        "internal": "deno doc --html --name=\"Mini Crypto Internals\" --output=\"./devDocs\" index.ts lib/*.ts"
     },
     "imports": {
         "@scure/base": "jsr:@scure/base",

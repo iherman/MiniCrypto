@@ -36,7 +36,7 @@ The coding examples (see the API documentation for details):
 
 ```typescript
 // Simple key generation
-import { generateKeysJWK, generateKeysMK } from "minicrypto";
+import { generateKeysJWK, generateKeysMK } from "@iherman/minicrypto";
 
 const keyPairEdDSACrypto = await generateKeys("eddsa");
 
@@ -69,7 +69,7 @@ Multikey, the (Multibase encoded) secret key by itself is not accepted.
 The coding examples (see the API for details):
 
 ```typescript
-import { sign, verify } from "minicrypto";
+import { sign, verify } from "@iherman/minicrypto";
 
 const message = "This is the string to be signed";
 
@@ -88,7 +88,7 @@ By default, if the key is in JWK, the ciphertext is generated as a plain, base64
 explicitly.
 
 ```typescript
-import { encrypt, decrypt } from "minicrypto";
+import { encrypt, decrypt } from "@iherman/minicrypto";
 
 const message2 = "This is the string to be encrypted";
 
@@ -110,7 +110,7 @@ Very frequently used for various type of data. There are many hash functions aro
 is "SHA-256", with "SHA-384" as a more secure alternative.
 
 ```typescript
-import { hash } from "minicrypto";
+import { hash } from "@iherman/minicrypto";
 
 const message = "This is the string to be hashed";
 

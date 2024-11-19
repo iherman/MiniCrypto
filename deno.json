@@ -1,12 +1,14 @@
 {
     "name" : "@iherman/minicrypto",
     "version": "0.5.0",
+    "description": "Set of functions that can be used to perform basic cryptographic functions hiding all the intricacies of WebCrypto.",
+    "license": "W3C-20150513",
     "exports": "./index.ts",
     "tasks": {
         "docs": "deno run -A tools/copy_readme.ts > minicrypto.ts; deno doc --html --name=\"Mini Crypto API\" minicrypto.ts; /bin/rm minicrypto.ts",
         "internal": "deno doc --html --name=\"Mini Crypto Internals\" --output=\"./devDocs\" index.ts lib/*.ts",
         "test": "deno test --ignore=\".npm/\"",
-        "npm": "deno run -A tools/build_npm.ts"
+        "package": "deno run -A tools/build_npm.ts"
     },
     "imports": {
         "@deno/dnt": "jsr:@deno/dnt@^0.41.3",

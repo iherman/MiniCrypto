@@ -1,4 +1,6 @@
-import { build, emptyDir } from "jsr:@deno/dnt";
+import { build, emptyDir } from "@deno/dnt";
+
+const deno_json = JSON.parse(Deno.readTextFileSync("deno.json"));
 
 await emptyDir("./.npm");
 
@@ -12,10 +14,10 @@ await build({
     importMap: "deno.json",
     package: {
         // package.json properties
-        name: "minicrypto",
-        version: "0.5.0",
-        description: "Set of functions that can be used to perform basic cryptographic functions hiding all the intricacies of WebCrypto.",
-        license: "W3C-20150513",
+        name: deno_json.name,
+        version: deno_json.version,
+        description: deno_json.description,
+        license: deno_json.license,
         repository: {
             type: "git",
             url: "git+https://github.com/iherman/MiniCrypto.git",

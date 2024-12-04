@@ -25,5 +25,5 @@ for (let indexLine of index) {
     result.push(indexLine);
 }
 
-console.log(result.join('\n'));
+Deno.writeTextFileSync('./index.ts',result.join('\n'));
 

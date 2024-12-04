@@ -7,13 +7,10 @@
   <meta name="doc-current-file" content="">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="page.css">
-  <link id="ddocResetStylesheet" rel="stylesheet" href="reset.css">
-
-    <script src="search_index.js" defer></script>
+  <link id="ddocResetStylesheet" rel="stylesheet" href="reset.css"><link href="comrak.css" rel="stylesheet" /><link href="prism.css" rel="stylesheet" /><script src="prism.js"></script><script src="search_index.js" defer></script>
     <script src="script.js" defer></script>
     <script src="fuse.js" defer></script>
-    <script src="search.js" defer></script>
-</head>
+    <script src="search.js" defer></script></head>
 <body>
 <div class="ddoc">
 <div><nav class="top-0 sticky bg-white z-50 py-3 h-14" id="topnav">
@@ -62,24 +59,7 @@ large JSON structures; advantage is that they can be managed easily by JSON tool
 opaque, but are extremely compact. Note that RSA keys cannot be stored in this format (there is no specification for this).</li>
 </ul>
 <p>The coding examples (see the API documentation for details):</p>
-<pre class=" highlight"><code class="language-typescript"><span style="font-style:italic;color:#969896;">// Simple key generation
-</span><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ generateKeysJWK, generateKeysMK } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;@iherman/minicrypto&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">keyPairEdDSACrypto </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">generateKeys</span><span style="color:#323232;">(</span><span style="color:#183691;">&quot;eddsa&quot;</span><span style="color:#323232;">);
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// Alternatively generate keys in JWK and Multikey formats.
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">keyPairEdDSAJWK </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">generateKeysJWK</span><span style="color:#323232;">(</span><span style="color:#183691;">&quot;eddsa&quot;</span><span style="color:#323232;">);
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">keyPairECDSAMK </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">generateKeysMK</span><span style="color:#323232;">(</span><span style="color:#183691;">&quot;ecdsa&quot;</span><span style="color:#323232;">);
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// ECDSA Keys using P-384
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">keyPairECDSAMK384 </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">generateKeysMK</span><span style="color:#323232;">(</span><span style="color:#183691;">&quot;ecdsa&quot;</span><span style="color:#323232;">, {namedCurve: </span><span style="color:#183691;">&quot;P-384&quot;</span><span style="color:#323232;">});
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// RSA Keys generated with a larger modulus (larger key, more secure) for signature/verification
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">keyPairRSAPSS </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">generateKeysJWK</span><span style="color:#323232;">(</span><span style="color:#183691;">&quot;rsa-pss&quot;</span><span style="color:#323232;">, {modulusLength: </span><span style="color:#0086b3;">4096</span><span style="color:#323232;">});  </span><span style="font-style:italic;color:#969896;">// Default is 2048
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// RSA Keys for encryption/decryption, using the default modulus length
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">keyPairRSAOAEP </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">generateKeys</span><span style="color:#323232;">(</span><span style="color:#183691;">&quot;rsa-oaep&quot;</span><span style="color:#323232;">);
-</span></code><button class="context_button" data-copy="// Simple key generation
+<pre class="highlight"><code class="language-typescript">// Simple key generation
 import { generateKeysJWK, generateKeysMK } from &quot;@iherman/minicrypto&quot;;
 
 const keyPairEdDSACrypto = await generateKeys(&quot;eddsa&quot;);
@@ -96,10 +76,31 @@ const keyPairRSAPSS = await generateKeysJWK(&quot;rsa-pss&quot;, {modulusLength:
 
 // RSA Keys for encryption/decryption, using the default modulus length
 const keyPairRSAOAEP = await generateKeys(&quot;rsa-oaep&quot;);
-"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+</code><button class="context_button" data-copy="// Simple key generation
+import { generateKeysJWK, generateKeysMK } from &quot;@iherman/minicrypto&quot;;
+
+const keyPairEdDSACrypto = await generateKeys(&quot;eddsa&quot;);
+
+// Alternatively generate keys in JWK and Multikey formats.
+const keyPairEdDSAJWK = await generateKeysJWK(&quot;eddsa&quot;);
+const keyPairECDSAMK = await generateKeysMK(&quot;ecdsa&quot;);
+
+// ECDSA Keys using P-384
+const keyPairECDSAMK384 = await generateKeysMK(&quot;ecdsa&quot;, {namedCurve: &quot;P-384&quot;});
+
+// RSA Keys generated with a larger modulus (larger key, more secure) for signature/verification
+const keyPairRSAPSS = await generateKeysJWK(&quot;rsa-pss&quot;, {modulusLength: 4096});  // Default is 2048
+
+// RSA Keys for encryption/decryption, using the default modulus length
+const keyPairRSAOAEP = await generateKeys(&quot;rsa-oaep&quot;);
+"><svg class="copy" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="2" y="2" width="7" height="7" fill="none"/>
 <rect x="6" y="6" width="7" height="7" fill="none"/>
 <path d="M1.55566 2.7C1.55566 2.03726 2.09292 1.5 2.75566 1.5H8.75566C9.41841 1.5 9.95566 2.03726 9.95566 2.7V5.1H12.3557C13.0184 5.1 13.5557 5.63726 13.5557 6.3V12.3C13.5557 12.9627 13.0184 13.5 12.3557 13.5H6.35566C5.69292 13.5 5.15566 12.9627 5.15566 12.3V9.9H2.75566C2.09292 9.9 1.55566 9.36274 1.55566 8.7V2.7ZM6.35566 9.9V12.3H12.3557V6.3H9.95566V8.7C9.95566 9.36274 9.41841 9.9 8.75566 9.9H6.35566ZM8.75566 8.7V2.7H2.75566V8.7H8.75566Z" fill="#232323"/>
+</svg>
+<svg class="check" width="15" height="15" viewBox="0 0 24 24" stroke-width="2" stroke="#232323" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+<path d="M5 12l5 5l10 -10" />
 </svg>
 </button><code></code></pre>
 <h2 id="signatureverification">
@@ -113,18 +114,7 @@ string. Other combinations must be set explicitly.</p>
 (private or secret, depending on the function). The only exception is that the <code>sign</code> function requires a full
 Multikey, the (Multibase encoded) secret key by itself is not accepted.</p>
 <p>The coding examples (see the API for details):</p>
-<pre class=" highlight"><code class="language-typescript"><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ sign, verify } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;@iherman/minicrypto&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">message </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#183691;">&quot;This is the string to be signed&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// Signature stored as plain base64
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">signature64</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">string </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">sign</span><span style="color:#323232;">(message, keyPairRSAPSS);
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">isValid64</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">boolean </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">verify</span><span style="color:#323232;">(message, signature, keyPairRSAPSS.publicKeyJwk);
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// Signature stored as multibase base58
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">signature58</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">string </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">sign</span><span style="color:#323232;">(message, keyPairECDSAMK);
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">isValid58</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">boolean </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">verify</span><span style="color:#323232;">(message, signature, keyPairECDSAMK.publicKeyMultibase);
-</span></code><button class="context_button" data-copy="import { sign, verify } from &quot;@iherman/minicrypto&quot;;
+<pre class="highlight"><code class="language-typescript">import { sign, verify } from &quot;@iherman/minicrypto&quot;;
 
 const message = &quot;This is the string to be signed&quot;;
 
@@ -135,29 +125,32 @@ const isValid64: boolean = await verify(message, signature, keyPairRSAPSS.public
 // Signature stored as multibase base58
 const signature58: string = await sign(message, keyPairECDSAMK);
 const isValid58: boolean = await verify(message, signature, keyPairECDSAMK.publicKeyMultibase);
-"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+</code><button class="context_button" data-copy="import { sign, verify } from &quot;@iherman/minicrypto&quot;;
+
+const message = &quot;This is the string to be signed&quot;;
+
+// Signature stored as plain base64
+const signature64: string = await sign(message, keyPairRSAPSS);
+const isValid64: boolean = await verify(message, signature, keyPairRSAPSS.publicKeyJwk);
+
+// Signature stored as multibase base58
+const signature58: string = await sign(message, keyPairECDSAMK);
+const isValid58: boolean = await verify(message, signature, keyPairECDSAMK.publicKeyMultibase);
+"><svg class="copy" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="2" y="2" width="7" height="7" fill="none"/>
 <rect x="6" y="6" width="7" height="7" fill="none"/>
 <path d="M1.55566 2.7C1.55566 2.03726 2.09292 1.5 2.75566 1.5H8.75566C9.41841 1.5 9.95566 2.03726 9.95566 2.7V5.1H12.3557C13.0184 5.1 13.5557 5.63726 13.5557 6.3V12.3C13.5557 12.9627 13.0184 13.5 12.3557 13.5H6.35566C5.69292 13.5 5.15566 12.9627 5.15566 12.3V9.9H2.75566C2.09292 9.9 1.55566 9.36274 1.55566 8.7V2.7ZM6.35566 9.9V12.3H12.3557V6.3H9.95566V8.7C9.95566 9.36274 9.41841 9.9 8.75566 9.9H6.35566ZM8.75566 8.7V2.7H2.75566V8.7H8.75566Z" fill="#232323"/>
+</svg>
+<svg class="check" width="15" height="15" viewBox="0 0 24 24" stroke-width="2" stroke="#232323" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+<path d="M5 12l5 5l10 -10" />
 </svg>
 </button><code></code></pre>
 <h2 id="encryptiondecryption">
 Encryption/decryption</h2>
 <p>By default, if the key is in JWK, the ciphertext is generated as a plain, base64 string. Other combinations must be set
 explicitly.</p>
-<pre class=" highlight"><code class="language-typescript"><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ encrypt, decrypt } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;@iherman/minicrypto&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">message2 </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#183691;">&quot;This is the string to be encrypted&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// Signature stored as plain base64
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">ciphertext64</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">string </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">encrypt</span><span style="color:#323232;">(message2, keyPairRSAOAEP.publicKey);
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// Signature stored as multibase base58
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">ciphertext58</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">string </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">encrypt</span><span style="color:#323232;">(message2, keyPairRSAOAEP.publicKey, {encoding: </span><span style="color:#183691;">&quot;base58&quot;</span><span style="color:#323232;">, format: </span><span style="color:#183691;">&quot;multibase&quot;</span><span style="color:#323232;">});
-</span><span style="color:#323232;">
-</span><span style="font-style:italic;color:#969896;">// Decrypt a ciphertext stored in multibase. Note that the encoding field is not required, it is automatically recognized
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">message2_decrypted</span><span style="font-weight:bold;color:#a71d5d;">: </span><span style="color:#0086b3;">string </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">decrypt</span><span style="color:#323232;">(ciphertext58, keyPairRSAOAEP.privateKey, {format: </span><span style="color:#183691;">&quot;multibase&quot;</span><span style="color:#323232;">});
-</span></code><button class="context_button" data-copy="import { encrypt, decrypt } from &quot;@iherman/minicrypto&quot;;
+<pre class="highlight"><code class="language-typescript">import { encrypt, decrypt } from &quot;@iherman/minicrypto&quot;;
 
 const message2 = &quot;This is the string to be encrypted&quot;;
 
@@ -169,10 +162,26 @@ const ciphertext58: string = await encrypt(message2, keyPairRSAOAEP.publicKey, {
 
 // Decrypt a ciphertext stored in multibase. Note that the encoding field is not required, it is automatically recognized
 const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.privateKey, {format: &quot;multibase&quot;});
-"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+</code><button class="context_button" data-copy="import { encrypt, decrypt } from &quot;@iherman/minicrypto&quot;;
+
+const message2 = &quot;This is the string to be encrypted&quot;;
+
+// Signature stored as plain base64
+const ciphertext64: string = await encrypt(message2, keyPairRSAOAEP.publicKey);
+
+// Signature stored as multibase base58
+const ciphertext58: string = await encrypt(message2, keyPairRSAOAEP.publicKey, {encoding: &quot;base58&quot;, format: &quot;multibase&quot;});
+
+// Decrypt a ciphertext stored in multibase. Note that the encoding field is not required, it is automatically recognized
+const message2_decrypted: string = await decrypt(ciphertext58, keyPairRSAOAEP.privateKey, {format: &quot;multibase&quot;});
+"><svg class="copy" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="2" y="2" width="7" height="7" fill="none"/>
 <rect x="6" y="6" width="7" height="7" fill="none"/>
 <path d="M1.55566 2.7C1.55566 2.03726 2.09292 1.5 2.75566 1.5H8.75566C9.41841 1.5 9.95566 2.03726 9.95566 2.7V5.1H12.3557C13.0184 5.1 13.5557 5.63726 13.5557 6.3V12.3C13.5557 12.9627 13.0184 13.5 12.3557 13.5H6.35566C5.69292 13.5 5.15566 12.9627 5.15566 12.3V9.9H2.75566C2.09292 9.9 1.55566 9.36274 1.55566 8.7V2.7ZM6.35566 9.9V12.3H12.3557V6.3H9.95566V8.7C9.95566 9.36274 9.41841 9.9 8.75566 9.9H6.35566ZM8.75566 8.7V2.7H2.75566V8.7H8.75566Z" fill="#232323"/>
+</svg>
+<svg class="check" width="15" height="15" viewBox="0 0 24 24" stroke-width="2" stroke="#232323" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+<path d="M5 12l5 5l10 -10" />
 </svg>
 </button><code></code></pre>
 <h2 id="miscellaneous-functions">
@@ -181,22 +190,26 @@ Miscellaneous functions</h2>
 Hashing</h3>
 <p>Very frequently used for various type of data. There are many hash functions around, the most widely used these days
 is &quot;SHA-256&quot;, with &quot;SHA-384&quot; as a more secure alternative.</p>
-<pre class=" highlight"><code class="language-typescript"><span style="font-weight:bold;color:#a71d5d;">import </span><span style="color:#323232;">{ hash } </span><span style="font-weight:bold;color:#a71d5d;">from </span><span style="color:#183691;">&quot;@iherman/minicrypto&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">message </span><span style="font-weight:bold;color:#a71d5d;">= </span><span style="color:#183691;">&quot;This is the string to be hashed&quot;</span><span style="color:#323232;">;
-</span><span style="color:#323232;">
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">hash_256 </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">hash</span><span style="color:#323232;">(message)              
-</span><span style="font-weight:bold;color:#a71d5d;">const </span><span style="color:#0086b3;">hash_384 </span><span style="font-weight:bold;color:#a71d5d;">= await </span><span style="font-weight:bold;color:#795da3;">hash</span><span style="color:#323232;">(message, </span><span style="color:#183691;">&quot;SHA-384&quot;</span><span style="color:#323232;">);  </span><span style="font-style:italic;color:#969896;">// Default is SHA-256
-</span></code><button class="context_button" data-copy="import { hash } from &quot;@iherman/minicrypto&quot;;
+<pre class="highlight"><code class="language-typescript">import { hash } from &quot;@iherman/minicrypto&quot;;
 
 const message = &quot;This is the string to be hashed&quot;;
 
 const hash_256 = await hash(message)              
 const hash_384 = await hash(message, &quot;SHA-384&quot;);  // Default is SHA-256
-"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+</code><button class="context_button" data-copy="import { hash } from &quot;@iherman/minicrypto&quot;;
+
+const message = &quot;This is the string to be hashed&quot;;
+
+const hash_256 = await hash(message)              
+const hash_384 = await hash(message, &quot;SHA-384&quot;);  // Default is SHA-256
+"><svg class="copy" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="2" y="2" width="7" height="7" fill="none"/>
 <rect x="6" y="6" width="7" height="7" fill="none"/>
 <path d="M1.55566 2.7C1.55566 2.03726 2.09292 1.5 2.75566 1.5H8.75566C9.41841 1.5 9.95566 2.03726 9.95566 2.7V5.1H12.3557C13.0184 5.1 13.5557 5.63726 13.5557 6.3V12.3C13.5557 12.9627 13.0184 13.5 12.3557 13.5H6.35566C5.69292 13.5 5.15566 12.9627 5.15566 12.3V9.9H2.75566C2.09292 9.9 1.55566 9.36274 1.55566 8.7V2.7ZM6.35566 9.9V12.3H12.3557V6.3H9.95566V8.7C9.95566 9.36274 9.41841 9.9 8.75566 9.9H6.35566ZM8.75566 8.7V2.7H2.75566V8.7H8.75566Z" fill="#232323"/>
+</svg>
+<svg class="check" width="15" height="15" viewBox="0 0 24 24" stroke-width="2" stroke="#232323" fill="none" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+<path d="M5 12l5 5l10 -10" />
 </svg>
 </button><code></code></pre>
 <h3 id="key-conversions">
@@ -240,7 +253,7 @@ Technology. 3 February 2023. National Standard. URL: <a href="https://nvlpubs.ni
 <span class="hover:bg-TypeAlias/15">HashAlgorithm</span>
                 </a>
               </li></ul><a class="flex items-center gap-0.5" href=".&#x2F;all_symbols.html">
-              <span class="leading-none">view all 18 symbols</span><svg
+              <span class="leading-none">view all 46 symbols</span><svg
 	width="16"
 	height="16"
 	viewBox="0 0 16 16"

@@ -16,6 +16,7 @@ await build({
         // package.json properties
         name: deno_json.name,
         version: deno_json.version,
+        date: deno_json.date,
         description: deno_json.description,
         license: deno_json.license,
         repository: {

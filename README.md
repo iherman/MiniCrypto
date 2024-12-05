@@ -27,7 +27,7 @@ for encryption and decryption (but cannot be used for sign/verify).
 A key pair is either stored as
 
 - (Binary) CryptoKeyPair, i.e., a pair of key stored in the native, binary format of the WebCrypto API implementation.
-- [WKKeyPair](https://www.w3.org/TR/controller-document/#JsonWebKey), i.e., a pair of key stored in JSON Web Key that conforms to [RFC7517](https://www.rfc-editor.org/rfc/rfc7517). The keys are relatively
+- [JWKKeyPair](./lib/types.ts/~/JWKeyPair.html), i.e., a pair of key stored in JSON Web Key that conforms to [RFC7517](https://www.rfc-editor.org/rfc/rfc7517). The keys are relatively
 large JSON structures; advantage is that they can be managed easily by JSON tools.
 - [Multikey](https://www.w3.org/TR/controller-document/#Multikey), i.e., a pair of key stored in [Multibase](https://www.w3.org/TR/controller-document/#multibase-0). The key data are encoded as strings and are therefore fairly
 opaque, but are extremely compact. Note that RSA keys cannot be stored in this format (there is no specification for this).

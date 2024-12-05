@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mini Crypto API documentation</title>
+  <title>&quot;@iherman&#x2F;minicrypto&quot; documentation</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="doc-current-file" content="">
@@ -15,7 +15,7 @@
 <div class="ddoc">
 <div><nav class="top-0 sticky bg-white z-50 py-3 h-14" id="topnav">
   <div class="h-full">
-    <div><ul class="breadcrumbs"><li>Mini Crypto API</li></ul>
+    <div><ul class="breadcrumbs"><li>&quot;@iherman&#x2F;minicrypto&quot;</li></ul>
 </div>
 
       <input
@@ -53,7 +53,7 @@ for encryption and decryption (but cannot be used for sign/verify).</li>
 <p>A key pair is either stored as</p>
 <ul>
 <li>(Binary) CryptoKeyPair, i.e., a pair of key stored in the native, binary format of the WebCrypto API implementation.</li>
-<li><a href="https://www.w3.org/TR/controller-document/#JsonWebKey">WKKeyPair</a>, i.e., a pair of key stored in JSON Web Key that conforms to <a href="https://www.rfc-editor.org/rfc/rfc7517">RFC7517</a>. The keys are relatively
+<li><a href="./lib/types.ts/~/JWKeyPair.html">JWKKeyPair</a>, i.e., a pair of key stored in JSON Web Key that conforms to <a href="https://www.rfc-editor.org/rfc/rfc7517">RFC7517</a>. The keys are relatively
 large JSON structures; advantage is that they can be managed easily by JSON tools.</li>
 <li><a href="https://www.w3.org/TR/controller-document/#Multikey">Multikey</a>, i.e., a pair of key stored in <a href="https://www.w3.org/TR/controller-document/#multibase-0">Multibase</a>. The key data are encoded as strings and are therefore fairly
 opaque, but are extremely compact. Note that RSA keys cannot be stored in this format (there is no specification for this).</li>

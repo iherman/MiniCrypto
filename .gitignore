@@ -69,3 +69,8 @@ npm/
 TODO.md
 minicrypto.ts
 
+# Artefact of deno doc
+!docs/~
+!docs/~/
+!docs/lib/*/~
+!docs/lib/*/~/

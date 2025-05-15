@@ -294,7 +294,7 @@ Deno.test("6.2 Signature test: JWK with rsa (a.k.a. rsa-pss)",
     }
 );
 
-Deno.test.ignore("6.4 Signature test: JWK with rsa-pss, with modulus length of 4096 (ignored by default, it takes too much time...)",
+Deno.test("6.4 Signature test: JWK with rsa-pss, with modulus length of 4096",
     async () => {
         const keyPair = await generateKeysJWK("rsa-pss", {modulusLength: 4096});
         const signature: string = await sign(message, keyPair);

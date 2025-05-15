@@ -7,15 +7,15 @@
   <meta name="doc-current-file" content="">
   <link rel="stylesheet" href=".&#x2F;styles.css">
   <link rel="stylesheet" href=".&#x2F;page.css">
-  <link id="ddocResetStylesheet" rel="stylesheet" href=".&#x2F;reset.css"><link href="./comrak.css" rel="stylesheet" /><link href="./prism.css" rel="stylesheet" /><script src="./prism.js"></script><script src=".&#x2F;search_index.js" defer></script>
-    <script src=".&#x2F;script.js" defer></script>
+  <link id="ddocResetStylesheet" rel="stylesheet" href=".&#x2F;reset.css"><link href="./comrak.css" rel="stylesheet" /><link href="./prism.css" rel="stylesheet" /><script src="./prism.js"></script><script src=".&#x2F;script.js" defer></script>
+  <script src=".&#x2F;darkmode_toggle.js"></script><script src=".&#x2F;search_index.js" defer></script>
     <script src=".&#x2F;fuse.js" defer></script>
     <script src=".&#x2F;search.js" defer></script></head>
 <body>
 <div class="ddoc">
-<div><nav class="top-0 sticky bg-white z-50 py-3 h-14" id="topnav">
+<div><nav id="topnav">
   <div class="h-full">
-    <div><ul class="breadcrumbs"><li><a href=".&#x2F;" class="contextLink">&quot;@iherman&#x2F;minicrypto&quot;</a></li><span class="text-[#0F172A]"><svg
+    <div class="flex items-center"><ul class="breadcrumbs"><li><a href=".&#x2F;" class="contextLink">&quot;@iherman&#x2F;minicrypto&quot;</a></li><span class="text-black dark:text-white"><svg
 	width="16"
 	height="16"
 	viewBox="0 0 16 16"
@@ -26,17 +26,37 @@
 </span><li>all symbols</li></ul>
 </div>
 
-      <input
-        type="text"
-        id="searchbar"
-        style="display: none;"
-        class="py-2 px-2.5 rounded text-sm border border-gray-300 bg-transparent" />
+    <div class="flex items-center gap-2">
+      <button id="theme-toggle" type="button" aria-label="Toggle dark mode" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 1.992a10 10 0 1 0 9.236 13.838c.341 -.82 -.476 -1.644 -1.298 -1.31a6.5 6.5 0 0 1 -6.864 -10.787l.077 -.08c.551 -.63 .113 -1.653 -.758 -1.653h-.266l-.068 -.006l-.06 -.002z" />
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" class=hidden>
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M12 19a1 1 0 0 1 .993 .883l.007 .117v1a1 1 0 0 1 -1.993 .117l-.007 -.117v-1a1 1 0 0 1 1 -1z" />
+  <path d="M18.313 16.91l.094 .083l.7 .7a1 1 0 0 1 -1.32 1.497l-.094 -.083l-.7 -.7a1 1 0 0 1 1.218 -1.567l.102 .07z" />
+  <path d="M7.007 16.993a1 1 0 0 1 .083 1.32l-.083 .094l-.7 .7a1 1 0 0 1 -1.497 -1.32l.083 -.094l.7 -.7a1 1 0 0 1 1.414 0z" />
+  <path d="M4 11a1 1 0 0 1 .117 1.993l-.117 .007h-1a1 1 0 0 1 -.117 -1.993l.117 -.007h1z" />
+  <path d="M21 11a1 1 0 0 1 .117 1.993l-.117 .007h-1a1 1 0 0 1 -.117 -1.993l.117 -.007h1z" />
+  <path d="M6.213 4.81l.094 .083l.7 .7a1 1 0 0 1 -1.32 1.497l-.094 -.083l-.7 -.7a1 1 0 0 1 1.217 -1.567l.102 .07z" />
+  <path d="M19.107 4.893a1 1 0 0 1 .083 1.32l-.083 .094l-.7 .7a1 1 0 0 1 -1.497 -1.32l.083 -.094l.7 -.7a1 1 0 0 1 1.414 0z" />
+  <path d="M12 2a1 1 0 0 1 .993 .883l.007 .117v1a1 1 0 0 1 -1.993 .117l-.007 -.117v-1a1 1 0 0 1 1 -1z" />
+  <path d="M12 7a5 5 0 1 1 -4.995 5.217l-.005 -.217l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
+</svg>
+</button>
+
+        <input
+          type="text"
+          id="searchbar"
+          style="display: none;"
+          class="py-2 px-2.5 mx-1 rounded text-sm border border-gray-300 bg-transparent dark:bg-gray-800 dark:border-gray-700"
+          />
+    </div>
   </div>
 </nav>
 <div id="searchResults"></div><div id="content">
-    <main><div class="space-y-7" id=""><section class="section" id="default">
-  <div>
-	  <h2 class="anchorable mb-1"><a href="#default" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
+    <main><div class="space-y-7" id=""><section class="section"  id="default"><div>
+      <h2 class="anchorable mb-1"><a href="#default" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
   width="16"
   height="16"
   viewBox="0 0 14 14"
@@ -59,123 +79,63 @@
 </svg>
 </a>
 <a href=".&#x2F;" class="contextLink">default</a></h2><div class="markdown_summary"><p><em>NOT FINAL, DO NOT USE IT FOR CRITICAL APPLICATIONS</em></p>
-</div></div><div class="namespaceSection"><div id="namespace_baseencoding" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;BaseEncoding.html" title="BaseEncoding">BaseEncoding</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Base encoding alternatives</p>
-</div></div></div>
-    </div><div id="namespace_cryptoalgorithm" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;CryptoAlgorithm.html" title="CryptoAlgorithm">CryptoAlgorithm</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Crypto identifier values that are relevant for this package. &quot;rsa&quot; is an alias for &quot;rsa-pss&quot;;
-&quot;ed25519&quot; is an alias for &quot;eddsa&quot;.</p>
-</div></div></div>
-    </div><div id="namespace_cryptopublickey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;CryptoPublicKey.html" title="CryptoPublicKey">CryptoPublicKey</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Used to overload the key argument for verify and encrypt operations</p>
-</div></div></div>
-    </div><div id="namespace_cryptosecretkey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;CryptoSecretKey.html" title="CryptoSecretKey">CryptoSecretKey</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Used to overload the key argument for sign and decrypt operations. Note that a plain Multibase is not an option; the
-multikey secret key alone may not contain all necessary information.</p>
-</div></div></div>
-    </div><div id="namespace_cryptotojwk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+</div></div><div class="namespaceSection"><div id="namespace_cryptotojwk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;cryptoToJWK.html" title="cryptoToJWK">cryptoToJWK</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Utility function: get a JWK representation from a binary crypto key/key pair.</p>
 </div></div></div>
-    </div><div id="namespace_decrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_cryptotomultikey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;decrypt.html" title="decrypt">decrypt</a>
+		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;cryptoToMultikey.html" title="cryptoToMultikey">cryptoToMultikey</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Decrypt a ciphertext.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Convert a Crypto Key pair to Multikeys. This function exports the cryptokeys into a JWK Key pair,
+and uses the <code>JWKToMultikey</code> function.</p>
 </div></div></div>
-    </div><div id="namespace_encrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;encrypt.html" title="encrypt">encrypt</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Encrypt a message.</p>
-</div></div></div>
-    </div><div id="namespace_generatekeys" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;generateKeys.html" title="generateKeys">generateKeys</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Generate a private/public key pair in one of the ecdsa/eddsa/RSA crypto algorithms (the term Ed25519 can also be used
-for eddsa). The result is the WebCrypto format for keys.</p>
-</div></div></div>
-    </div><div id="namespace_generatekeysjwk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_generatekeysjwk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;generateKeysJWK.html" title="generateKeysJWK">generateKeysJWK</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Generate a new public/private key pair in one of the ecdsa/eddsa/RSA crypto algorithms
 (the term Ed25519 can also be used for eddsa). The result is a pair or JWK format for keys.</p>
 </div></div></div>
-    </div><div id="namespace_generatekeysmk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_generatekeysmk" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;generateKeysMK.html" title="generateKeysMK">generateKeysMK</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Generate a new public/private key pair in one of the ecdsa or eddsa crypto algorithms
 (the term Ed25519 can also be used for eddsa). The result is a pair or Multibase formatted keys, i.e., in Multikey.</p>
 </div></div></div>
-    </div><div id="namespace_hash" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;hash.html" title="hash">hash</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Calculate Hash of a string</p>
-</div></div></div>
-    </div><div id="namespace_hashalgorithm" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;HashAlgorithm.html" title="HashAlgorithm">HashAlgorithm</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Crypto hash values that are used for this package. &quot;SHA-256&quot; is the usual default.</p>
-</div></div></div>
-    </div><div id="namespace_jwkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKeyPair.html" title="JWKeyPair">JWKeyPair</a>
-
-	      <div class="namespaceItemContentDoc"><span class="italic">No documentation available</span></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKeyPair.html#property_publickeyjwk">publicKeyJwk</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKeyPair.html#property_secretkeyjwk">secretKeyJwk</a></li></ul></div>
-    </div><div id="namespace_jwktocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_jwktocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;JWKToCrypto.html" title="JWKToCrypto">JWKToCrypto</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Utility function: get a binary crypto representation from a JWK encoded key/key pair.</p>
 </div></div></div>
-    </div><div id="namespace_keyoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
+    </div><div id="namespace_multibase" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;KeyOptions.html" title="KeyOptions">KeyOptions</a>
+		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;Multibase.html" title="Multibase">Multibase</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Options to specify details for keys, i.e., the underlying algorithms.</p>
-</div></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;KeyOptions.html#property_hash">hash</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;KeyOptions.html#property_moduluslength">modulusLength</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;KeyOptions.html#property_namedcurve">namedCurve</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;KeyOptions.html#property_saltlength">saltLength</a></li></ul></div>
-    </div><div id="namespace_outputoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;OutputOptions.html" title="OutputOptions">OutputOptions</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Options for the output of signing/verifying and for encryption/decryption.</p>
-</div></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;OutputOptions.html#property_encoding">encoding</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;OutputOptions.html#property_format">format</a></li></ul></div>
-    </div><div id="namespace_sign" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
-<div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;sign.html" title="sign">sign</a>
-
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Sign a message.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Type for a Multibase</p>
 </div></div></div>
-    </div><div id="namespace_verify" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_multikey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15 dark:text-InterfaceDark dark:bg-InterfaceDark/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;verify.html" title="verify">verify</a>
+		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;Multikey.html" title="Multikey">Multikey</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Verify a signature.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Pair of keys in Multibase encoding. Using the field names as defined in the
+<a href="https://www.w3.org/TR/controller-document/#multikey">Multikey specification</a>.</p>
+</div></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;Multikey.html#property_publickeymultibase">publicKeyMultibase</a></li><li><a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;Multikey.html#property_secretkeymultibase">secretKeyMultibase</a></li></ul></div>
+    </div><div id="namespace_multikeytocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
+<div class="namespaceItemContent">
+		    <a href=".&#x2F;.&#x2F;.&#x2F;~&#x2F;multikeyToCrypto.html" title="multikeyToCrypto">multikeyToCrypto</a>
+
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Convert a multikey pair to Web Crypto. This function decodes the multikey data into JWK using the
+<code>multikeyToJWK</code> function, and imports the resulting keys into Web Crypto.</p>
 </div></div></div>
     </div></div>
 </section>
-<section class="section" id="lib&#x2F;crypto.ts">
-  <div>
-	  <h2 class="anchorable mb-1"><a href="#lib&#x2F;crypto.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
+<section class="section"  id="lib&#x2F;crypto.ts"><div>
+      <h2 class="anchorable mb-1"><a href="#lib&#x2F;crypto.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
   width="16"
   height="16"
   viewBox="0 0 14 14"
@@ -199,25 +159,25 @@ for eddsa). The result is the WebCrypto format for keys.</p>
 </a>
 <a href=".&#x2F;.&#x2F;lib&#x2F;crypto.ts&#x2F;index.html" class="contextLink">lib&#x2F;crypto.ts</a></h2><div class="markdown_summary"><p>The main crypto operations: encrypt/decrypt and sign/verify. These functions are exported (via index.ts) to the
 external world.</p>
-</div></div><div class="namespaceSection"><div id="namespace_decrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+</div></div><div class="namespaceSection"><div id="namespace_decrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;crypto.ts&#x2F;~&#x2F;decrypt.html" title="decrypt">decrypt</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Decrypt a ciphertext.</p>
 </div></div></div>
-    </div><div id="namespace_encrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_encrypt" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;crypto.ts&#x2F;~&#x2F;encrypt.html" title="encrypt">encrypt</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Encrypt a message.</p>
 </div></div></div>
-    </div><div id="namespace_sign" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_sign" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;crypto.ts&#x2F;~&#x2F;sign.html" title="sign">sign</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Sign a message.</p>
 </div></div></div>
-    </div><div id="namespace_verify" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_verify" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;crypto.ts&#x2F;~&#x2F;verify.html" title="verify">verify</a>
 
@@ -225,9 +185,8 @@ external world.</p>
 </div></div></div>
     </div></div>
 </section>
-<section class="section" id="lib&#x2F;hash.ts">
-  <div>
-	  <h2 class="anchorable mb-1"><a href="#lib&#x2F;hash.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
+<section class="section"  id="lib&#x2F;hash.ts"><div>
+      <h2 class="anchorable mb-1"><a href="#lib&#x2F;hash.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
   width="16"
   height="16"
   viewBox="0 0 14 14"
@@ -250,7 +209,7 @@ external world.</p>
 </svg>
 </a>
 <a href=".&#x2F;.&#x2F;lib&#x2F;hash.ts&#x2F;index.html" class="contextLink">lib&#x2F;hash.ts</a></h2><div class="markdown_summary"><p>Hashing function; useful for crypto users, though not used by the rest of the package.</p>
-</div></div><div class="namespaceSection"><div id="namespace_calculatehash" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+</div></div><div class="namespaceSection"><div id="namespace_calculatehash" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;hash.ts&#x2F;~&#x2F;calculateHash.html" title="calculateHash">calculateHash</a>
 
@@ -258,9 +217,8 @@ external world.</p>
 </div></div></div>
     </div></div>
 </section>
-<section class="section" id="lib&#x2F;keys.ts">
-  <div>
-	  <h2 class="anchorable mb-1"><a href="#lib&#x2F;keys.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
+<section class="section"  id="lib&#x2F;keys.ts"><div>
+      <h2 class="anchorable mb-1"><a href="#lib&#x2F;keys.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
   width="16"
   height="16"
   viewBox="0 0 14 14"
@@ -284,27 +242,27 @@ external world.</p>
 </a>
 <a href=".&#x2F;.&#x2F;lib&#x2F;keys.ts&#x2F;index.html" class="contextLink">lib&#x2F;keys.ts</a></h2><div class="markdown_summary"><p>Key management operations: creation in binary Crypto, JWK, or Multikey formats. Note that Multikeys are only
 defined for ecdsa and eddsa; it cannot be used for rsa algorithms.</p>
-</div></div><div class="namespaceSection"><div id="namespace_cryptoalgorithm" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
+</div></div><div class="namespaceSection"><div id="namespace_cryptoalgorithm" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;keys.ts&#x2F;~&#x2F;CryptoAlgorithm.html" title="CryptoAlgorithm">CryptoAlgorithm</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Crypto identifier values that are relevant for this package. &quot;rsa&quot; is an alias for &quot;rsa-pss&quot;;
 &quot;ed25519&quot; is an alias for &quot;eddsa&quot;.</p>
 </div></div></div>
-    </div><div id="namespace_generatekeys" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_generatekeys" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;keys.ts&#x2F;~&#x2F;generateKeys.html" title="generateKeys">generateKeys</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Generate a private/public key pair in one of the ecdsa/eddsa/RSA crypto algorithms (the term Ed25519 can also be used
 for eddsa). The result is the WebCrypto format for keys.</p>
 </div></div></div>
-    </div><div id="namespace_jwkeypairtocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_jwkeypairtocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;keys.ts&#x2F;~&#x2F;JWKeyPairToCrypto.html" title="JWKeyPairToCrypto">JWKeyPairToCrypto</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Convert a public/private key pair in JWK to WebCrypto's binary representation.</p>
 </div></div></div>
-    </div><div id="namespace_jwkeytocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_jwkeytocrypto" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;keys.ts&#x2F;~&#x2F;JWKeyToCrypto.html" title="JWKeyToCrypto">JWKeyToCrypto</a>
 
@@ -312,9 +270,8 @@ for eddsa). The result is the WebCrypto format for keys.</p>
 </div></div></div>
     </div></div>
 </section>
-<section class="section" id="lib&#x2F;types.ts">
-  <div>
-	  <h2 class="anchorable mb-1"><a href="#lib&#x2F;types.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
+<section class="section"  id="lib&#x2F;types.ts"><div>
+      <h2 class="anchorable mb-1"><a href="#lib&#x2F;types.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
   width="16"
   height="16"
   viewBox="0 0 14 14"
@@ -337,49 +294,49 @@ for eddsa). The result is the WebCrypto format for keys.</p>
 </svg>
 </a>
 <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;index.html" class="contextLink">lib&#x2F;types.ts</a></h2><div class="markdown_summary"><p>Common types for the package</p>
-</div></div><div class="namespaceSection"><div id="namespace_baseencoding" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
+</div></div><div class="namespaceSection"><div id="namespace_baseencoding" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;BaseEncoding.html" title="BaseEncoding">BaseEncoding</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Base encoding alternatives</p>
 </div></div></div>
-    </div><div id="namespace_crv" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
+    </div><div id="namespace_crv" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;Crv.html" title="Crv">Crv</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Elliptic curves that are used for this package.</p>
 </div></div></div>
-    </div><div id="namespace_cryptopublickey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
+    </div><div id="namespace_cryptopublickey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;CryptoPublicKey.html" title="CryptoPublicKey">CryptoPublicKey</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Used to overload the key argument for verify and encrypt operations</p>
 </div></div></div>
-    </div><div id="namespace_cryptosecretkey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
+    </div><div id="namespace_cryptosecretkey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;CryptoSecretKey.html" title="CryptoSecretKey">CryptoSecretKey</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Used to overload the key argument for sign and decrypt operations. Note that a plain Multibase is not an option; the
 multikey secret key alone may not contain all necessary information.</p>
 </div></div></div>
-    </div><div id="namespace_hashalgorithm" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15" title="Type Alias">T</div></div>
+    </div><div id="namespace_hashalgorithm" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-TypeAlias bg-TypeAlias/15 dark:text-TypeAliasDark dark:bg-TypeAliasDark/15" title="Type Alias">T</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;HashAlgorithm.html" title="HashAlgorithm">HashAlgorithm</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Crypto hash values that are used for this package. &quot;SHA-256&quot; is the usual default.</p>
 </div></div></div>
-    </div><div id="namespace_jwkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
+    </div><div id="namespace_jwkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15 dark:text-InterfaceDark dark:bg-InterfaceDark/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;JWKeyPair.html" title="JWKeyPair">JWKeyPair</a>
 
 	      <div class="namespaceItemContentDoc"><span class="italic">No documentation available</span></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;JWKeyPair.html#property_publickeyjwk">publicKeyJwk</a></li><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;JWKeyPair.html#property_secretkeyjwk">secretKeyJwk</a></li></ul></div>
-    </div><div id="namespace_keyoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
+    </div><div id="namespace_keyoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15 dark:text-InterfaceDark dark:bg-InterfaceDark/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;KeyOptions.html" title="KeyOptions">KeyOptions</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Options to specify details for keys, i.e., the underlying algorithms.</p>
 </div></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;KeyOptions.html#property_hash">hash</a></li><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;KeyOptions.html#property_moduluslength">modulusLength</a></li><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;KeyOptions.html#property_namedcurve">namedCurve</a></li><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;KeyOptions.html#property_saltlength">saltLength</a></li></ul></div>
-    </div><div id="namespace_outputoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
+    </div><div id="namespace_outputoptions" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15 dark:text-InterfaceDark dark:bg-InterfaceDark/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;OutputOptions.html" title="OutputOptions">OutputOptions</a>
 
@@ -387,9 +344,8 @@ multikey secret key alone may not contain all necessary information.</p>
 </div></div><ul class="namespaceItemContentSubItems"><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;OutputOptions.html#property_encoding">encoding</a></li><li><a href=".&#x2F;.&#x2F;lib&#x2F;types.ts&#x2F;~&#x2F;OutputOptions.html#property_format">format</a></li></ul></div>
     </div></div>
 </section>
-<section class="section" id="lib&#x2F;utils.ts">
-  <div>
-	  <h2 class="anchorable mb-1"><a href="#lib&#x2F;utils.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
+<section class="section"  id="lib&#x2F;utils.ts"><div>
+      <h2 class="anchorable mb-1"><a href="#lib&#x2F;utils.ts" class="anchor" aria-label="Anchor" tabIndex="-1"><svg
   width="16"
   height="16"
   viewBox="0 0 14 14"
@@ -412,70 +368,72 @@ multikey secret key alone may not contain all necessary information.</p>
 </svg>
 </a>
 <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;index.html" class="contextLink">lib&#x2F;utils.ts</a></h2><div class="markdown_summary"><p>Various utility functions; not meant to be exported to the external world...</p>
-</div></div><div class="namespaceSection"><div id="namespace_algorithmdatacr" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+</div></div><div class="namespaceSection"><div id="namespace_algorithmdatacr" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;algorithmDataCR.html" title="algorithmDataCR">algorithmDataCR</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Mapping of the CryptoKey instance and the corresponding terms for the WebCrypto API like
 sign or verify.</p>
 </div></div></div>
-    </div><div id="namespace_arraybuffertotext" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_bytestotext" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;arrayBufferToText.html" title="arrayBufferToText">arrayBufferToText</a>
+		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;bytesToText.html" title="bytesToText">bytesToText</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Array buffer to text, needed for crypto operations.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Array buffer to text, needed for crypto operations.
+The text is decoded from UTF-8, which is the default for the WebCrypto API.</p>
 </div></div></div>
-    </div><div id="namespace_decoderesult" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_decoderesult" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;decodeResult.html" title="decodeResult">decodeResult</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Decode a string from encoded form. If the text is recognized as Multibase, the encoding format is there, otherwise
 the <code>options</code> argument rules.</p>
 </div></div></div>
-    </div><div id="namespace_encoderesult" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_encoderesult" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;encodeResult.html" title="encodeResult">encodeResult</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Encode the result in base58 or base64, possibly in Multibase. The <code>options</code> argument dictates.
 Default is base64 encoding and plain output.</p>
 </div></div></div>
-    </div><div id="namespace_iscryptokey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_iscryptokey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;isCryptoKey.html" title="isCryptoKey">isCryptoKey</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Type guard for a CryptoKey object.</p>
 </div></div></div>
-    </div><div id="namespace_iscryptokeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_iscryptokeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;isCryptoKeyPair.html" title="isCryptoKeyPair">isCryptoKeyPair</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Type guard for a CryptoKeyPair object.</p>
 </div></div></div>
-    </div><div id="namespace_isjwkkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_isjwkkeypair" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;isJWKKeyPair.html" title="isJWKKeyPair">isJWKKeyPair</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Type guard for a JWK Key Pair</p>
 </div></div></div>
-    </div><div id="namespace_ismultibase" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_ismultibase" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;isMultibase.html" title="isMultibase">isMultibase</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Type guard for a Multibase value.</p>
 </div></div></div>
-    </div><div id="namespace_ismultikey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_ismultikey" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;isMultikey.html" title="isMultikey">isMultikey</a>
 
 	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Type guard for a Multikey object.</p>
 </div></div></div>
-    </div><div id="namespace_texttoarraybuffer" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15" title="Function">f</div></div>
+    </div><div id="namespace_texttobytes" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Function bg-Function/15 dark:text-FunctionDark dark:bg-FunctionDark/15" title="Function">f</div></div>
 <div class="namespaceItemContent">
-		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;textToArrayBuffer.html" title="textToArrayBuffer">textToArrayBuffer</a>
+		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;textToBytes.html" title="textToBytes">textToBytes</a>
 
-	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Text to array buffer, needed for crypto operations.</p>
+	      <div class="namespaceItemContentDoc"><div class="markdown_summary"><p>Text to array buffer, needed for crypto operations.
+The text is encoded in UTF-8, which is the default for the WebCrypto API.</p>
 </div></div></div>
-    </div><div id="namespace_webcryptoapidata" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15" title="Interface">I</div></div>
+    </div><div id="namespace_webcryptoapidata" class="namespaceItem" ><div class="docNodeKindIcon"><div class="text-Interface bg-Interface/15 dark:text-InterfaceDark dark:bg-InterfaceDark/15" title="Interface">I</div></div>
 <div class="namespaceItemContent">
 		    <a href=".&#x2F;.&#x2F;lib&#x2F;utils.ts&#x2F;~&#x2F;WebCryptoAPIData.html" title="WebCryptoAPIData">WebCryptoAPIData</a>
 

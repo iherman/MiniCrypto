@@ -3,8 +3,8 @@
  *
  * @module
  */
-import type * as types     from "./types.ts";
-import {textToArrayBuffer} from "./utils.ts";
+import type * as types       from "./types.ts";
+import { textToBytes } from "./utils.ts";
 
 /**
  * Calculate Hash of a string
@@ -14,7 +14,7 @@ import {textToArrayBuffer} from "./utils.ts";
  * @result - the hash value in hexadecimal format.
  */
 export async function calculateHash(input: string, sh_func: types.HashAlgorithm = "SHA-256"): Promise<string> {
-    const data = textToArrayBuffer(input)
+    const data: Uint8Array = textToBytes(input);
     const hashBuffer = await crypto.subtle.digest(sh_func, data);
 
     const hashArray = Array.from(new Uint8Array(hashBuffer));

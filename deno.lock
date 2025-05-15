@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@iherman/multikey-webcrypto@*": "0.6.1",
     "jsr:@iherman/multikey-webcrypto@0.6.1": "0.6.1",
+    "jsr:@scure/base@*": "1.2.5",
     "npm:@jsonjoy.com/base64@*": "1.1.2_tslib@2.5.0",
     "npm:@noble/curves@1.9.0": "1.9.0",
     "npm:@scure/base@1.2.5": "1.2.5"
@@ -12,8 +13,11 @@
       "integrity": "8d49f334d0286fb5c282085efe03ff69efbbb6bf42c4abb9ba7a7b107b13f6f0",
       "dependencies": [
         "npm:@noble/curves",
-        "npm:@scure/base"
+        "npm:@scure/base@1.2.5"
       ]
+    },
+    "@scure/base@1.2.5": {
+      "integrity": "9fee89cb561205b4e19145a08ec45b23d99896c7b53de28e88f5aba48221c98d"
     }
   },
   "npm": {

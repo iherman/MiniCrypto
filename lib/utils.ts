@@ -95,22 +95,23 @@ export function isJWKKeyPair(obj: object): obj is JWKeyPair {
 
 /**
  * Text to array buffer, needed for crypto operations.
+ * The text is encoded in UTF-8, which is the default for the WebCrypto API.
  *
  * @param text
  */
-export function textToArrayBuffer(text: string): ArrayBuffer {
-    return (new TextEncoder()).encode(text).buffer as ArrayBuffer;
+export function textToBytes(text: string): Uint8Array {
+    return (new TextEncoder()).encode(text);
 }
 
 /**
  * Array buffer to text, needed for crypto operations.
+ * The text is decoded from UTF-8, which is the default for the WebCrypto API.
  *
- * @param arrayBuffer
+ * @param byteBuffer
  */
-export function arrayBufferToText(arrayBuffer: ArrayBuffer): string {
-    return (new TextDecoder()).decode(arrayBuffer);
+export function bytesToText(byteBuffer: Uint8Array): string {
+    return (new TextDecoder()).decode(byteBuffer);
 }
-
 
 /**
  * Additional structure needed for operations such as sign or verify in the WebCrypto API. Can
@@ -164,11 +165,11 @@ export function algorithmDataCR(key: CryptoKey): WebCryptoAPIData {
  * Merge the options with a default. The default depends on the usage of Multikeys or not.
  *
  * @param opts
- * @param multik - whether this is for a multikey/multibase environment or not
+ * @param multi - whether this is for a multikey/multibase environment or not
  */
-function generateFullOptions(opts: OutputOptions | undefined, multik: boolean): OutputOptions {
+function generateFullOptions(opts: OutputOptions | undefined, multi: boolean): OutputOptions {
     const defaultOptions = ((): OutputOptions => {
-        if (multik) {
+        if (multi) {
             return {
                 format: "multibase",
                 encoding: "base58",
@@ -189,10 +190,10 @@ function generateFullOptions(opts: OutputOptions | undefined, multik: boolean): 
  *
  * @param options
  * @param rawMessage
- * @param multik - whether this is for a multikey/multibase environment or not
+ * @param multi - whether this is for a multikey/multibase environment or not
  */
-export function encodeResult(options: OutputOptions | undefined, rawMessage: ArrayBuffer, multik: boolean): string {
-    const fullOptions = generateFullOptions(options, multik);
+export function encodeResult(options: OutputOptions | undefined, rawMessage: ArrayBuffer, multi: boolean): string {
+    const fullOptions = generateFullOptions(options, multi);
 
     const UintMessage: Uint8Array = new Uint8Array(rawMessage);
     if (fullOptions.format === "plain") {

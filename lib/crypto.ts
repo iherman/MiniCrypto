@@ -60,7 +60,7 @@ export async function sign(message: string, userKeys: CryptoSecretKey, options?:
     const key = await getSecretKey(userKeys);
 
     // Prepare the message to signature:
-    const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
+    const rawMessage: Uint8Array = utils.textToBytes(message);
 
     // The crypto algorithm to be used with this key:
     const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
@@ -88,7 +88,7 @@ export async function verify(message: string, signature: string, userKey: Crypto
     const key = await getPublicKey(userKey);
 
     // Prepare the message for verification:
-    const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
+    const rawMessage: Uint8Array = utils.textToBytes(message);
 
     // Prepare the signature for verification
     const rawSignature = utils.decodeResult(options, signature, utils.isMultibase(userKey) || utils.isMultikey(userKey));
@@ -119,7 +119,7 @@ export async function encrypt(message: string, userKey: CryptoPublicKey, options
     const key = await getPublicKey(userKey, ["encrypt"]);
 
     // Prepare the message to encryption
-    const rawMessage: ArrayBuffer = utils.textToArrayBuffer(message);
+    const rawMessage: Uint8Array = utils.textToBytes(message);
 
     // The crypto algorithm to be used with this key:
     const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
@@ -153,5 +153,5 @@ export async function decrypt(ciphertext: string, userKey: CryptoSecretKey, opti
 
     const rawMessage = await crypto.subtle.decrypt(algorithm, key, rawCiphertext);
 
-    return utils.arrayBufferToText(rawMessage);
+    return utils.bytesToText(new Uint8Array(rawMessage));
 }

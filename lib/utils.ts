@@ -5,8 +5,8 @@
  */
 
 import { Crv, KeyOptions, OutputOptions, JWKeyPair } from "./types.ts";
-import { Multibase, Multikey }                        from "multikey-webcrypto";
-import { base58, base64urlnopad as base64 }           from "@scure/base";
+import { Multibase, Multikey }                       from "jsr:@iherman/multikey-webcrypto@0.6.1";
+import { base58, base64urlnopad as base64 }          from "npm:@scure/base@1.2.5";
 
 const SALT_LENGTH= 32;
 
@@ -99,7 +99,7 @@ export function isJWKKeyPair(obj: object): obj is JWKeyPair {
  * @param text
  */
 export function textToArrayBuffer(text: string): ArrayBuffer {
-    return (new TextEncoder()).encode(text).buffer;
+    return (new TextEncoder()).encode(text).buffer as ArrayBuffer;
 }
 
 /**
@@ -209,10 +209,10 @@ export function encodeResult(options: OutputOptions | undefined, rawMessage: Arr
  *
  * @param options
  * @param encodedMessage
- * @param multik - whether this is for a multikey/multibase environment or not
+ * @param multi - whether this is for a multikey/multibase environment or not
  */
-export function decodeResult(options: OutputOptions | undefined, encodedMessage: string, multik: boolean): ArrayBuffer {
-    const fullOptions = generateFullOptions(options, multik);
+export function decodeResult(options: OutputOptions | undefined, encodedMessage: string, multi: boolean): ArrayBuffer {
+    const fullOptions = generateFullOptions(options, multi);
     const output: Uint8Array = ((): Uint8Array => {
             if (fullOptions.format === "multibase") {
                 if (encodedMessage[0] === 'z') {
@@ -231,6 +231,6 @@ export function decodeResult(options: OutputOptions | undefined, encodedMessage:
     if (output === undefined) {
         throw new Error(`WTF: ${encodedMessage}, \n${JSON.stringify(fullOptions, null, 4)}`);
     } else {
-        return output.buffer;
+        return output.buffer as ArrayBuffer;
     }
 }

@@ -4,10 +4,10 @@
  *
  * @module
  */
-import { Multikey, Multibase, multikeyToCrypto } from "multikey-webcrypto";
-import {JWKeyPair, CryptoSecretKey, CryptoPublicKey, OutputOptions} from "./types.ts";
-import * as utils                                from "./utils.ts";
-import * as keys                                 from "./keys.ts";
+import { type Multikey, type Multibase, multikeyToCrypto }                from "jsr:@iherman/multikey-webcrypto@0.6.1";
+import type { JWKeyPair, CryptoSecretKey, CryptoPublicKey, OutputOptions} from "./types.ts";
+import * as utils                                                         from "./utils.ts";
+import * as keys                                                          from "./keys.ts";
 
 
 async function getSecretKey(userKeys: CryptoSecretKey, usage: KeyUsage[] = ["sign"]): Promise<CryptoKey> {

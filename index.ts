@@ -4,23 +4,24 @@
 
 
 
-import { cryptoToMultikey, Multikey }                                      from "multikey-webcrypto";
-import {generateKeys, CryptoAlgorithm, JWKeyPairToCrypto, JWKeyToCrypto }  from "./lib/keys.ts";
+import { cryptoToMultikey, Multikey }                                      from "jsr:@iherman/multikey-webcrypto@0.6.1";
+import { generateKeys, CryptoAlgorithm, JWKeyPairToCrypto, JWKeyToCrypto } from "./lib/keys.ts";
 import { KeyOptions, JWKeyPair }                                           from "./lib/types.ts";
 import { isJWKKeyPair, isCryptoKeyPair }                                   from "./lib/utils.ts";
 
 // Re-exports; some of these may not be used in practice, but it helps
 // to generate the right documentation.
 export type {
-    HashAlgorithm, KeyOptions, OutputOptions, CryptoSecretKey, CryptoPublicKey,
-    BaseEncoding, JWKeyPair
-}                                                                           from "./lib/types.ts";
-export type { CryptoAlgorithm }                                             from "./lib/keys.ts";
-export  { generateKeys }  from "./lib/keys.ts";
-export type { Multibase, Multikey }                                         from "multikey-webcrypto";
-export { multikeyToCrypto, cryptoToMultikey }                               from "multikey-webcrypto";
-export { calculateHash as hash }                                            from "./lib/hash.ts";
-export { sign, verify, encrypt, decrypt }                                   from "./lib/crypto.ts"
+    HashAlgorithm, KeyOptions, 
+    OutputOptions, CryptoSecretKey, 
+    CryptoPublicKey, BaseEncoding, JWKeyPair
+}                                             from "./lib/types.ts";
+export type { CryptoAlgorithm }               from "./lib/keys.ts";
+export  { generateKeys }                      from "./lib/keys.ts";
+export type { Multibase, Multikey }           from "jsr:@iherman/multikey-webcrypto@0.6.1";
+export { multikeyToCrypto, cryptoToMultikey } from "jsr:@iherman/multikey-webcrypto@0.6.1";
+export { calculateHash as hash }              from "./lib/hash.ts";
+export { sign, verify, encrypt, decrypt }     from "./lib/crypto.ts"
 
 /**
  * Utility function: get a binary crypto representation from a JWK encoded key/key pair.

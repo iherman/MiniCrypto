@@ -1,4 +1,3 @@
-import { assertEquals, assert } from "jsr:@std/assert";
 import {
     generateKeysJWK, generateKeysMK,
     generateKeys,
@@ -9,6 +8,31 @@ import {
     hash
 } from "../index.ts";
 import { isMultibase, isMultikey } from "../lib/utils.ts";
+
+class AssertionError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "AssertionError";
+    }
+}
+
+/**
+ * No need for a complex assertion function, just use a simple one.
+ */
+function assert(condition: boolean, message: string): void {
+    if (!condition) {
+        throw new AssertionError(message);
+    }
+}
+
+/**
+ * No need for a complex assertion equals function, just use a simple one.
+ */
+function assertEquals(actual: string, expected: string, message: string): void {
+    if (actual !== expected) {
+        throw new AssertionError(message);
+    }
+}
 
 /* Putting here a chinese text to see if everything works on non-trivial Unicode text, too: */
 const message: string = "This is the basic message used all over the place. 郝易文";
@@ -184,7 +208,7 @@ Deno.test("4.2 Signature test: default Multikey with ed25519 (a.k.a. eddsa)",
         const keyPair = await generateKeysMK("ed25519");
         const signature: string = await sign(message, keyPair);
         const verified: boolean = await verify(message, signature, keyPair.publicKeyMultibase);
-        assert(verified);
+        assert(verified, "Signature verification failed");
     }
 );
 
@@ -230,7 +254,7 @@ Deno.test("5.2 Signature test: default Multikey with eddsa, signature in multiba
         assert(isMultibase(signature), "The signature is not Multibase")
         assert(signature[0] === 'u', "The signature is not Multibase base64")
         const verified: boolean = await verify(message, signature, keyPair.publicKeyMultibase, {encoding: "base64" });
-        assert(verified);
+        assert(verified, "Signature verification failed");
     }
 );
 
@@ -295,7 +319,7 @@ Deno.test("7.2 Utility function test: converting a JWK key pair to crypto and ba
         const keyPair = await generateKeysJWK("eddsa");
         const cryptoKeyPair = await JWKToCrypto(keyPair);
         const newKeyPair = await cryptoToJWK(cryptoKeyPair);
-        assert(JSON.stringify(newKeyPair) === JSON.stringify(keyPair));
+        assert(JSON.stringify(newKeyPair) === JSON.stringify(keyPair), "JWK Key <-> Crypto conversion failed");
     }
 );
 
@@ -305,6 +329,6 @@ Deno.test("7.3 Utility function test: converting a JWK key to crypto and back sh
         const key = keyPair.publicKeyJwk;
         const cryptoKey = await JWKToCrypto(key);
         const newKey = await cryptoToJWK(cryptoKey);
-        assert(JSON.stringify(newKey) === JSON.stringify(key));
+        assert(JSON.stringify(newKey) === JSON.stringify(key), "JWK Key <-> Crypto conversion failed");
     }
 );

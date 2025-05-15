@@ -1,4 +1,4 @@
-import { build, emptyDir } from "@deno/dnt";
+import { build, emptyDir } from "jsr:@deno/dnt@^0.41.3";
 
 const deno_json = JSON.parse(Deno.readTextFileSync("deno.json"));
 

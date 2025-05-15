@@ -1,9 +1,9 @@
 {
     "name" : "@iherman/minicrypto",
-    "version": "0.5.2",
-    "date": "2024-12-04",
+    "version": "0.6.0",
+    "date": "2025-05-15",
     "description": "Set of functions that can be used to perform basic cryptographic functions hiding all the intricacies of WebCrypto.",
-    "license": "W3C-20150513",
+    "license": "W3C-20230101",
     "exports": "./index.ts",
     "tasks": {
         "docs": {
@@ -15,11 +15,6 @@
         "publish_npm": "(cd .npm; npm publish --access=public)"
     },
     "exclude": [".npm/"],
-    "imports": {
-        "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
-        "@scure/base": "npm:@scure/base@^1.2.1",
-        "multikey-webcrypto": "npm:multikey-webcrypto@^0.5.5"
-    },
     "lint" :{
         "include": ["lib/"]
     }

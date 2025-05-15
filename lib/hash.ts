@@ -3,7 +3,7 @@
  *
  * @module
  */
-import * as types          from "./types.ts";
+import type * as types     from "./types.ts";
 import {textToArrayBuffer} from "./utils.ts";
 
 /**

@@ -4,6 +4,7 @@
  *
  * @module
  */
+// deno-lint-ignore no-import-prefix
 import { type Multikey, type Multibase, multikeyToCrypto }                from "jsr:@iherman/multikey-webcrypto@0.6.1";
 import type { JWKeyPair, CryptoSecretKey, CryptoPublicKey, OutputOptions} from "./types.ts";
 import * as utils                                                         from "./utils.ts";

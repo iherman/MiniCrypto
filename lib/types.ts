@@ -4,6 +4,7 @@
  * @module
  */
 
+// deno-lint-ignore no-import-prefix
 import type { Multikey, Multibase } from "jsr:@iherman/multikey-webcrypto@0.6.1";
 
 /** Elliptic curves that are used for this package. */

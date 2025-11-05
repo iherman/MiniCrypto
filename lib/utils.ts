@@ -5,8 +5,8 @@
  */
 
 import type { Crv, KeyOptions, OutputOptions, JWKeyPair } from "./types.ts";
-import type { Multibase, Multikey }                       from "jsr:@iherman/multikey-webcrypto@0.6.1";
-import { base58, base64urlnopad as base64 }               from "npm:@scure/base@1.2.5";
+import type { Multibase, Multikey }                       from "@iherman/multikey-webcrypto";
+import { base58, base64urlnopad as base64 }               from "@scure/base";
 
 const SALT_LENGTH= 32;
 

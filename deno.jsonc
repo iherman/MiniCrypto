@@ -1,10 +1,16 @@
 {
     "name" : "@iherman/minicrypto",
-    "version": "0.6.0",
-    "date": "2025-05-15",
+    "version": "0.6.1",
+    "date": "2025-11-04",
     "description": "Set of functions that can be used to perform basic cryptographic functions hiding all the intricacies of WebCrypto.",
     "license": "W3C-20230101",
     "exports": "./index.ts",
+    "imports": {
+        "@iherman/multikey-webcrypto" : "jsr:@iherman/multikey-webcrypto@0.6.2",
+        "@scure/base"                 : "npm:@scure/base@2.0.0",
+        "@deno/dnt"                   : "jsr:@deno/dnt@^0.41.3",
+        "@std/jsonc"                  : "jsr:@std/jsonc"
+    },
     "tasks": {
         "docs": {
             "description": "Generate a user API documentation. The task is complicated because it includes the README.md file into the top level before, and makes sure that the file .nojekyll exists after running deno doc.",

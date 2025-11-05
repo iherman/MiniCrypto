@@ -4,8 +4,7 @@
  *
  * @module
  */
-// deno-lint-ignore no-import-prefix
-import { type Multikey, type Multibase, multikeyToCrypto }                from "jsr:@iherman/multikey-webcrypto@0.6.1";
+import { type Multikey, type Multibase, multikeyToCrypto }                from "@iherman/multikey-webcrypto";
 import type { JWKeyPair, CryptoSecretKey, CryptoPublicKey, OutputOptions} from "./types.ts";
 import * as utils                                                         from "./utils.ts";
 import * as keys                                                          from "./keys.ts";
@@ -67,7 +66,7 @@ export async function sign(message: string, userKeys: CryptoSecretKey, options?:
     const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
     // The real crypto action
-    const rawSignature: ArrayBuffer = await crypto.subtle.sign(algorithm, key, rawMessage);
+    const rawSignature: ArrayBuffer = await crypto.subtle.sign(algorithm, key, rawMessage.buffer as ArrayBuffer);
 
     return utils.encodeResult(options, rawSignature, utils.isMultikey(userKeys))
 }
@@ -98,7 +97,7 @@ export async function verify(message: string, signature: string, userKey: Crypto
     const algorithm : utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
     // The real crypto meat:
-    return crypto.subtle.verify(algorithm, key, rawSignature, rawMessage)
+    return crypto.subtle.verify(algorithm, key, rawSignature, rawMessage.buffer as ArrayBuffer)
 }
 
 /**
@@ -126,7 +125,7 @@ export async function encrypt(message: string, userKey: CryptoPublicKey, options
     const algorithm: utils.WebCryptoAPIData = utils.algorithmDataCR(key);
 
     // The real crypto action
-    const rawCiphertext: ArrayBuffer = await crypto.subtle.encrypt(algorithm, key, rawMessage);
+    const rawCiphertext: ArrayBuffer = await crypto.subtle.encrypt(algorithm, key, rawMessage.buffer as ArrayBuffer);
 
     return utils.encodeResult(options, rawCiphertext, false);
 }

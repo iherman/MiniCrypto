@@ -4,7 +4,7 @@
 
 
 
-import { cryptoToMultikey, Multikey }                                      from "jsr:@iherman/multikey-webcrypto@0.6.1";
+import { cryptoToMultikey, Multikey }                                      from "@iherman/multikey-webcrypto";
 import { generateKeys, CryptoAlgorithm, JWKeyPairToCrypto, JWKeyToCrypto } from "./lib/keys.ts";
 import { KeyOptions, JWKeyPair }                                           from "./lib/types.ts";
 import { isJWKKeyPair, isCryptoKeyPair }                                   from "./lib/utils.ts";
@@ -12,14 +12,14 @@ import { isJWKKeyPair, isCryptoKeyPair }                                   from 
 // Re-exports; some of these may not be used in practice, but it helps
 // to generate the right documentation.
 export type {
-    HashAlgorithm, KeyOptions, 
-    OutputOptions, CryptoSecretKey, 
+    HashAlgorithm, KeyOptions,
+    OutputOptions, CryptoSecretKey,
     CryptoPublicKey, BaseEncoding, JWKeyPair
 }                                             from "./lib/types.ts";
 export type { CryptoAlgorithm }               from "./lib/keys.ts";
 export  { generateKeys }                      from "./lib/keys.ts";
-export type { Multibase, Multikey }           from "jsr:@iherman/multikey-webcrypto@0.6.1";
-export { multikeyToCrypto, cryptoToMultikey } from "jsr:@iherman/multikey-webcrypto@0.6.1";
+export type { Multibase, Multikey }           from "@iherman/multikey-webcrypto";
+export { multikeyToCrypto, cryptoToMultikey } from "@iherman/multikey-webcrypto";
 export { calculateHash as hash }              from "./lib/hash.ts";
 export { sign, verify, encrypt, decrypt }     from "./lib/crypto.ts"
 

@@ -3,9 +3,9 @@
   "specifiers": {
     "jsr:@david/code-block-writer@^13.0.2": "13.0.3",
     "jsr:@deno/cache-dir@~0.10.3": "0.10.3",
+    "jsr:@deno/dnt@*": "0.41.3",
     "jsr:@deno/dnt@~0.41.3": "0.41.3",
     "jsr:@deno/graph@~0.73.1": "0.73.1",
-    "jsr:@iherman/multikey-webcrypto@0.6.2": "0.6.2",
     "jsr:@std/assert@0.223": "0.223.0",
     "jsr:@std/assert@0.226": "0.226.0",
     "jsr:@std/bytes@0.223": "0.223.0",
@@ -26,7 +26,7 @@
     "jsr:@std/path@~0.225.2": "0.225.2",
     "jsr:@ts-morph/bootstrap@0.24": "0.24.0",
     "jsr:@ts-morph/common@0.24": "0.24.0",
-    "npm:@noble/curves@2.0.1": "2.0.1",
+    "npm:@iherman/multikey-webcrypto@0.6.2": "0.6.2",
     "npm:@scure/base@2.0.0": "2.0.0"
   },
   "jsr": {
@@ -56,13 +56,6 @@
     },
     "@deno/graph@0.73.1": {
       "integrity": "cd69639d2709d479037d5ce191a422eabe8d71bb68b0098344f6b07411c84d41"
-    },
-    "@iherman/multikey-webcrypto@0.6.2": {
-      "integrity": "07aac62d622acba5e4d4127676df91977fc2d8baa62e4f2b1eef0f78da785313",
-      "dependencies": [
-        "npm:@noble/curves",
-        "npm:@scure/base"
-      ]
     },
     "@std/assert@0.223.0": {
       "integrity": "eb8d6d879d76e1cc431205bd346ed4d88dc051c6366365b1af47034b0670be24"
@@ -150,6 +143,13 @@
     }
   },
   "npm": {
+    "@iherman/multikey-webcrypto@0.6.2": {
+      "integrity": "sha512-ri7lD3f1BKPWBxK3TVVrN4SaXF62Ta+WF5jjz1TjwxS3hDa+DpF6l3/uVtqIB7p61IGS1iPIogb3np3sVotKFA==",
+      "dependencies": [
+        "@noble/curves",
+        "@scure/base"
+      ]
+    },
     "@noble/curves@2.0.1": {
       "integrity": "sha512-vs1Az2OOTBiP4q0pwjW5aF0xp9n4MxVrmkFBxc6EKZc6ddYx5gaZiAsZoq0uRRXWbi3AT/sBqn05eRPtn1JCPw==",
       "dependencies": [
@@ -166,8 +166,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@deno/dnt@~0.41.3",
-      "jsr:@iherman/multikey-webcrypto@0.6.2",
       "jsr:@std/jsonc@*",
+      "npm:@iherman/multikey-webcrypto@0.6.2",
       "npm:@scure/base@2.0.0"
     ]
   }

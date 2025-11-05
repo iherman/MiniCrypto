@@ -16,7 +16,7 @@ await build({
         // see JS docs for overview and more options
         deno: true,
     },
-    importMap: "deno.jsonc",
+    importMap: "import_map.json",
     package: {
         // package.json properties
         name: deno_json.name,

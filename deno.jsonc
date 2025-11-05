@@ -6,7 +6,7 @@
     "license": "W3C-20230101",
     "exports": "./index.ts",
     "imports": {
-        "@iherman/multikey-webcrypto" : "jsr:@iherman/multikey-webcrypto@0.6.2",
+        "@iherman/multikey-webcrypto" : "npm:@iherman/multikey-webcrypto@0.6.2",
         "@scure/base"                 : "npm:@scure/base@2.0.0",
         "@deno/dnt"                   : "jsr:@deno/dnt@^0.41.3",
         "@std/jsonc"                  : "jsr:@std/jsonc"
